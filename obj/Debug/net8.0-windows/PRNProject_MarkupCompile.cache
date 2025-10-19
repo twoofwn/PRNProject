@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\HocTap\Semester\Ky5\PRN212\PRNProject\obj\Debug\net8.0-windows\
+C:\Users\admin\OneDrive\Máy tính\PRN212\Project\Project\PRNProject\obj\Debug\net8.0-windows\
 PRNProject
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-D:\HocTap\Semester\Ky5\PRN212\PRNProject\App.xaml
-11407045341
+C:\Users\admin\OneDrive\Máy tính\PRN212\Project\Project\PRNProject\App.xaml
+31610554639
 
-41987003671
-198-192518753
-MainWindow.xaml;
+14-1838788102
+234304356355
+MainWindow.xaml;Pages\HomePage.xaml;Pages\LoginPage.xaml;
 
-True
+False
 

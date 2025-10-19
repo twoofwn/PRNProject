@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using PRNProject.Pages;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,13 +19,9 @@ namespace PRNProject
     {
         public MainWindow()
         {   
-            InitializeComponent(); 
-
+            InitializeComponent();
+            MainFrame.Navigate(new LoginPage());
         }
     }
 
-    public class Person()
-    {
-
-    }
 }
