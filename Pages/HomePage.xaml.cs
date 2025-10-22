@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using PRNProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,15 +22,35 @@ namespace PRNProject.Pages
     /// </summary>
     public partial class HomePage : Page
     {
+        private readonly MyTaskContext _context = new MyTaskContext();
         public HomePage(string loggedInUsername)
         {
             InitializeComponent();
             WelcomeTextBlock.Text = $"Chào mừng, {loggedInUsername}!";
-            LoadSampleData();
+            LoadData();
         }
 
-        private void LoadSampleData()
+        private void LoadData()
         {
+            try
+            {
+                var tasks = _context.Tasks
+                                    .Include(t => t.Status)
+                                    .Include(t => t.Priority)
+                                    .ToList(); 
+
+                TasksListView.ItemsSource = tasks;
+
+                var projects = _context.Projects
+                                       .Where(p => p.OwnerUserId == 1) 
+                                       .ToList();
+                ProjectsListView.ItemsSource = projects;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải dữ liệu: {ex.Message}", "Lỗi Database", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
     }
 }
