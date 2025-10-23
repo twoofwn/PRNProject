@@ -1,0 +1,33 @@
+﻿# Build Folders
+bin/
+obj/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+*.pdb
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Publish
+*.deploy
+*.zip
+*.publishsettings
+*.DotSettings.user
+
+# Others
+_ReSharper*/
