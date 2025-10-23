@@ -24,7 +24,7 @@
 
                     <Button x:Name="LoginButton" Content="Đăng nhập" Margin="0,25,0,0"
                         Padding="10,7" FontSize="16" FontWeight="SemiBold"
-                        Background="#4CAF50" Foreground="White" BorderThickness="0"
+                        Background="#0052CC" Foreground="White" BorderThickness="0"
                         Click="LoginButton_Click"/>
                 </StackPanel>
             </Border>
