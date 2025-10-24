@@ -24,7 +24,6 @@ namespace PRNProject.Pages
             InitializeComponent();
             WelcomeTextBlock.Text = $"Chào mừng, {loggedInUsername}!";
             _currentUser = _context.Users.FirstOrDefault(u => u.Username == loggedInUsername);
-            SidebarControl.MenuClicked += SidebarControl_MenuClicked;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -198,11 +197,6 @@ namespace PRNProject.Pages
 
                 MessageBox.Show($"Mở chi tiết cho công việc: '{selectedTask.Title}' (ID: {selectedTask.TaskId})");
             }
-        }
-
-        private void SidebarControl_MenuClicked(object sender, string page)
-        {
-            // Handle sidebar navigation
         }
     }
 

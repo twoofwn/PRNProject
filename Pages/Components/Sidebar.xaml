@@ -39,8 +39,8 @@
     </UserControl.Resources>
 
     <StackPanel Background="#F4F5F7">
-        <Button Content="Dashboard" Style="{StaticResource SidebarButtonStyle}" Tag="Dashboard"/>
-        <Button Content="Projects" Style="{StaticResource SidebarButtonStyle}" Tag="Projects"/>
-        <Button Content="Tasks" Style="{StaticResource SidebarButtonStyle}" Tag="Tasks"/>
+        <Button Content="Dashboard" Style="{StaticResource SidebarButtonStyle}" Tag="Dashboard" Click="SidebarButton_Click"/>
+        <Button Content="Projects" Style="{StaticResource SidebarButtonStyle}" Tag="Projects" Click="SidebarButton_Click"/>
+        <Button Content="Tasks" Style="{StaticResource SidebarButtonStyle}" Tag="Tasks" Click="SidebarButton_Click"/>
     </StackPanel>
 </UserControl>

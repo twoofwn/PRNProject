@@ -39,8 +39,9 @@ namespace PRNProject.Pages
 
                 if (user != null)
                 {
-                    var mainWindow = (MainWindow)Application.Current.MainWindow;
-                    mainWindow.MainFrame.Navigate(new HomePage(username));
+                    AppSession.CurrentUser = user;
+
+                    this.NavigationService.Navigate(new HomePage(user.Username));
                 }
                 else
                 {

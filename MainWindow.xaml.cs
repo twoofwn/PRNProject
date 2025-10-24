@@ -17,10 +17,14 @@ namespace PRNProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static Frame MainNavigationFrame { get; private set; }
+
         public MainWindow()
         {   
             InitializeComponent();
-            MainFrame.Navigate(new LoginPage());
+            MainNavigationFrame = this.MainFrame;
+
+            MainNavigationFrame.Navigate(new LoginPage());
         }
     }
 
