@@ -92,6 +92,7 @@ namespace PRNProject.Pages
             DoneListView.ItemsSource = tasks.Where(t => t.StatusId == 3).ToList();
         }
 
+
         // Event Handlers for Filters
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -189,13 +190,23 @@ namespace PRNProject.Pages
         private void Task_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var listView = sender as ListView;
-            if (listView.SelectedItem is Models.Task selectedTask)
+            if (listView != null && listView.SelectedItem != null)
             {
-                // Giả sử bạn có một trang tên là TaskPage nhận TaskId làm tham số
-                // var taskPage = new TaskPage(selectedTask.TaskId);
-                // this.NavigationService.Navigate(taskPage);
+                var selectedTask = listView.SelectedItem as Models.Task;
+                if (selectedTask == null) return;
 
-                MessageBox.Show($"Mở chi tiết cho công việc: '{selectedTask.Title}' (ID: {selectedTask.TaskId})");
+                var currentUser = AppSession.CurrentUser;
+                if (currentUser == null)
+                {
+                    MessageBox.Show("Lỗi: Không tìm thấy người dùng hiện tại.");
+                    return;
+                }
+
+                var detailWindow = new TaskDetailWindow(selectedTask, currentUser);
+                if (detailWindow.ShowDialog() == true)
+                {
+                    LoadTasks(); 
+                }
             }
         }
     }

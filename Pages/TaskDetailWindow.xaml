@@ -1,0 +1,163 @@
+﻿<Window x:Class="PRNProject.Pages.TaskDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PRNProject.Pages" 
+        mc:Ignorable="d"
+        Title="Chi Tiết Công Việc" Height="500" Width="700"
+        WindowStartupLocation="CenterOwner"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="BaseButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="#007AFF"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="BorderBrush" Value="#ADADAD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.7*"/>
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--left side-->
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="0,0,15,0">
+                <StackPanel>
+                    <TextBlock Text="Tiêu đề Task:" FontWeight="Bold"/>
+                    <TextBox x:Name="TitleTextBox" Padding="5" FontSize="16" Margin="0,5,0,10"/>
+
+                    <TextBlock Text="Mô tả:" FontWeight="Bold"/>
+                    <TextBox x:Name="DescriptionTextBox" Padding="5" MinHeight="100" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,5,0,10"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,5,10">
+                            <TextBlock Text="Dự án:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="ProjectComboBox" DisplayMemberPath="Title" SelectedValuePath="ProjectId"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,10">
+                            <TextBlock Text="Trạng thái:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="StatusComboBox" DisplayMemberPath="Name" SelectedValuePath="StatusId"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,10">
+                            <TextBlock Text="Độ ưu tiên:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="PriorityComboBox" DisplayMemberPath="Name" SelectedValuePath="PriorityId"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,10">
+                            <TextBlock Text="Ngày hết hạn:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <DatePicker x:Name="DueDatePicker" DisplayDateStart="{x:Static sys:DateTime.Today}" 
+                                        xmlns:sys="clr-namespace:System;assembly=mscorlib"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!--tag-->
+                    <TextBlock Text="Tags:" FontWeight="Bold" Margin="0,10,0,5"/>
+                    <ItemsControl x:Name="TagsItemsControl" Margin="0,0,0,10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#EEE" CornerRadius="4" Padding="8,4" Margin="0,0,5,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                        <Button x:Name="RemoveTagButton" Content="x" Foreground="Red" Background="Transparent" BorderThickness="0" Margin="5,0,0,0"
+                                                Click="RemoveTagButton_Click" CommandParameter="{Binding TagId}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="Gán Tag mới:" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="AvailableTagsComboBox" Width="200" DisplayMemberPath="Name" SelectedValuePath="TagId"/>
+                        <Button x:Name="AddTagButton" Content="Thêm Tag" Margin="10,0,0,0" Style="{StaticResource SecondaryButtonStyle}" Click="AddTagButton_Click"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--right side-->
+            <Grid Grid.Column="1" Background="#F9F9F9">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Bình luận" FontSize="16" FontWeight="Bold" Padding="10" Background="#EEE"/>
+
+                <ListView x:Name="CommentsListView" Grid.Row="1" Margin="5" BorderThickness="0" Background="Transparent">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="5,8" Width="230">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Body}" TextWrapping="Wrap"/>
+                                    <TextBlock Margin="0,5,0,0" FontSize="10" Foreground="Gray">
+                                        <Run Text="{Binding AuthorUser.DisplayName, FallbackValue='User'}"/>
+                                        <Run Text=" - "/>
+                                        <Run Text="{Binding CreatedAt, StringFormat='dd/MM/yy HH:mm'}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <StackPanel Grid.Row="2" Margin="10">
+                    <TextBlock Text="Viết bình luận mới:" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBox x:Name="NewCommentTextBox" MinHeight="50" TextWrapping="Wrap" AcceptsReturn="True"/>
+                    <Button x:Name="PostCommentButton" Content="Đăng" Style="{StaticResource PrimaryButtonStyle}" Margin="0,5,0,0" HorizontalAlignment="Right" Click="PostCommentButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="1" BorderBrush="#DDD" BorderThickness="0,1,0,0" Padding="0,10,0,0" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="SaveButton" Content="Lưu &amp; Đóng" Style="{StaticResource PrimaryButtonStyle}" Click="SaveButton_Click"/>
+                <Button x:Name="DeleteButton" Content="Xóa Task" Style="{StaticResource DangerButtonStyle}" Margin="10,0" Click="DeleteButton_Click"/>
+                <Button x:Name="CancelButton" Content="Hủy" Style="{StaticResource SecondaryButtonStyle}" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
