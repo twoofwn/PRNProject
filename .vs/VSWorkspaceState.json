@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Models",
+    "\\Pages",
+    "\\Windows"
   ],
-  "SelectedNode": "\\App.xaml.cs",
+  "SelectedNode": "\\PRNProject.csproj",
   "PreviewInSolutionExplorer": false
 }

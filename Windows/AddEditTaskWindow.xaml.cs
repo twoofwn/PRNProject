@@ -29,6 +29,7 @@ namespace PRNProject.Windows
             LoadComboBoxes();
 
             Task = task ?? new Models.Task();
+            DueDatePicker.DisplayDateStart = DateTime.Today;
             if (task != null)
             {
                 TitleTextBox.Text = Task.Title;

@@ -51,6 +51,11 @@ namespace PRNProject.Pages
                 }
             }
         }
+        // Hàm mới để xử lý sự kiện click nút đăng ký
+        private void GoToRegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new RegisterPage());
+        }
 
     }
 }

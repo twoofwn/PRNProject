@@ -26,6 +26,9 @@
                         Padding="10,7" FontSize="16" FontWeight="SemiBold"
                         Background="#0052CC" Foreground="White" BorderThickness="0"
                         Click="LoginButton_Click"/>
+                    <Button x:Name="GoToRegisterButton" Content="Chưa có tài khoản? Đăng ký" Margin="0,15,0,0"
+                            FontSize="12" BorderThickness="0" Background="Transparent" Foreground="Blue"
+                            Cursor="Hand" Click="GoToRegisterButton_Click" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Border>
         </Grid>
