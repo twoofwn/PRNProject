@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PRNProject.Models;
-using PRNProject.Windows;
+using PRNProject.Windows; // Đảm bảo TaskDetailWindow nằm trong namespace này
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,6 +136,34 @@ namespace PRNProject.Pages
             if (DoneListView.SelectedItem != null) return (Models.Task)DoneListView.SelectedItem;
             return null;
         }
+
+        // <<< PHẦN CODE MỚI ĐƯỢC THÊM VÀO >>>
+        private void Task_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var listView = sender as ListView;
+            if (listView != null && listView.SelectedItem != null)
+            {
+                var selectedTask = listView.SelectedItem as Models.Task;
+                if (selectedTask == null) return;
+
+                // Lấy thông tin người dùng sở hữu project
+                var projectOwner = _context.Users.Find(_currentProject.OwnerUserId);
+                if (projectOwner == null)
+                {
+                    MessageBox.Show("Lỗi: Không tìm thấy người dùng của project này.");
+                    return;
+                }
+
+                // Giả định bạn có một cửa sổ tên là TaskDetailWindow để hiển thị chi tiết
+                var detailWindow = new TaskDetailWindow(selectedTask, projectOwner);
+                if (detailWindow.ShowDialog() == true)
+                {
+                    LoadBoard(); // Tải lại bảng sau khi chỉnh sửa
+                }
+            }
+        }
+        // <<< KẾT THÚC PHẦN CODE MỚI >>>
+
         #endregion
 
         #region Navigation

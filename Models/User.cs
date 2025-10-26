@@ -20,6 +20,8 @@ public partial class User
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
+    public virtual ICollection<ProjectMember> ProjectMembers { get; set; } = new List<ProjectMember>();
+
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();

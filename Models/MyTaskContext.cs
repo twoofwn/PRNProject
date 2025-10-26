@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace PRNProject.Models;
 
@@ -22,6 +21,8 @@ public partial class MyTaskContext : DbContext
 
     public virtual DbSet<Project> Projects { get; set; }
 
+    public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -33,20 +34,14 @@ public partial class MyTaskContext : DbContext
     public virtual DbSet<UserSetting> UserSettings { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var config = new
-        ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer(config.GetConnectionString("DBContext"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=MyTask;User Id=sa;Password=123;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.CommentId).HasName("PK__Comment__C3B4DFCA4ED52BBC");
+            entity.HasKey(e => e.CommentId).HasName("PK__Comment__C3B4DFCA39396DF2");
 
             entity.ToTable("Comment");
 
@@ -63,7 +58,7 @@ public partial class MyTaskContext : DbContext
 
         modelBuilder.Entity<Priority>(entity =>
         {
-            entity.HasKey(e => e.PriorityId).HasName("PK__Priority__D0A3D0BE826F6DC6");
+            entity.HasKey(e => e.PriorityId).HasName("PK__Priority__D0A3D0BE6E0F1F2D");
 
             entity.ToTable("Priority");
 
@@ -72,7 +67,7 @@ public partial class MyTaskContext : DbContext
 
         modelBuilder.Entity<Project>(entity =>
         {
-            entity.HasKey(e => e.ProjectId).HasName("PK__Project__761ABEF031EE7A0C");
+            entity.HasKey(e => e.ProjectId).HasName("PK__Project__761ABEF014DBEB61");
 
             entity.ToTable("Project");
 
@@ -86,9 +81,30 @@ public partial class MyTaskContext : DbContext
                 .HasConstraintName("FK_Project_User");
         });
 
+        modelBuilder.Entity<ProjectMember>(entity =>
+        {
+            entity.HasKey(e => new { e.ProjectId, e.UserId }).HasName("PK__ProjectM__A7623234F8BAA65E");
+
+            entity.ToTable("ProjectMember");
+
+            entity.Property(e => e.JoinedAt).HasDefaultValueSql("(sysutcdatetime())");
+            entity.Property(e => e.Role)
+                .HasMaxLength(50)
+                .HasDefaultValue("Member");
+
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectMembers)
+                .HasForeignKey(d => d.ProjectId)
+                .HasConstraintName("FK_ProjectMember_Project");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ProjectMembers)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ProjectMember_User");
+        });
+
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.StatusId).HasName("PK__Status__C8EE2063D3CBCE12");
+            entity.HasKey(e => e.StatusId).HasName("PK__Status__C8EE2063965F51EA");
 
             entity.ToTable("Status");
 
@@ -97,7 +113,7 @@ public partial class MyTaskContext : DbContext
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.TagId).HasName("PK__Tag__657CF9AC70FCEBC1");
+            entity.HasKey(e => e.TagId).HasName("PK__Tag__657CF9AC96C0DCEE");
 
             entity.ToTable("Tag");
 
@@ -113,7 +129,7 @@ public partial class MyTaskContext : DbContext
 
         modelBuilder.Entity<Task>(entity =>
         {
-            entity.HasKey(e => e.TaskId).HasName("PK__Task__7C6949B18BEC3681");
+            entity.HasKey(e => e.TaskId).HasName("PK__Task__7C6949B1A14D1765");
 
             entity.ToTable("Task");
 
@@ -153,18 +169,18 @@ public partial class MyTaskContext : DbContext
                         .HasConstraintName("FK_TaskTag_Task"),
                     j =>
                     {
-                        j.HasKey("TaskId", "TagId").HasName("PK__TaskTag__AA3E862BBFB45DD6");
+                        j.HasKey("TaskId", "TagId").HasName("PK__TaskTag__AA3E862BF9171C10");
                         j.ToTable("TaskTag");
                     });
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C7A7BD3F3");
+            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C6C7CE698");
 
             entity.ToTable("User");
 
-            entity.HasIndex(e => e.Username, "UQ__User__536C85E445D48528").IsUnique();
+            entity.HasIndex(e => e.Username, "UQ__User__536C85E4BF842AEC").IsUnique();
 
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
             entity.Property(e => e.DisplayName).HasMaxLength(100);

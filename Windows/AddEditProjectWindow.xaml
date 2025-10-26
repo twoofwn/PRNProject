@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PRNProject.Windows"
         mc:Ignorable="d"
-        Title="AddEditProjectWindow" Height="450" Width="450"
+        Title="Quản lý Project" Height="550" Width="500"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="15">
         <Grid.RowDefinitions>
@@ -30,10 +30,59 @@
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Mã màu (Hex):" VerticalAlignment="Center" Margin="0,15,10,0"/>
         <TextBox Grid.Row="2" Grid.Column="1" x:Name="ColorHexTextBox" Padding="5" Margin="0,15,0,0" ToolTip="Ví dụ: #4CAF50"/>
 
-        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Thêm thành viên:" VerticalAlignment="Center" Margin="0,15,10,0"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,15,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" x:Name="MemberSearchTextBox" Padding="5" TextChanged="MemberSearchTextBox_TextChanged"/>
+                <Button Grid.Column="1" Content="Thêm" Width="60" Margin="5,0,0,0" Click="AddMemberButton_Click"/>
+            </Grid>
+            <Popup x:Name="SearchPopup" IsOpen="False" StaysOpen="False" PlacementTarget="{Binding ElementName=MemberSearchTextBox}" Width="{Binding ActualWidth, ElementName=MemberSearchTextBox}">
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                    <ListBox x:Name="SearchResultsListBox" MaxHeight="120" MouseUp="SearchResultsListBox_MouseUp">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Username, StringFormat=' ({0})'}" Foreground="Gray" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+            </Popup>
+        </StackPanel>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Thành viên hiện tại:" VerticalAlignment="Top" Margin="0,15,10,0"/>
+        <Border Grid.Row="4" Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="0,15,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ListBox x:Name="SelectedMembersListBox" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Username, StringFormat=' ({0})'}" Foreground="Gray" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="Xóa" Background="IndianRed" Foreground="White" Padding="5,2" Click="RemoveMemberButton_Click"
+                                        Tag="{Binding}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button Content="Lưu" Width="80" Padding="8,5" Margin="0,0,10,0" IsDefault="True" Click="SaveButton_Click"/>
             <Button Content="Hủy" Width="80" Padding="8,5" IsCancel="True" Click="CancelButton_Click"/>
         </StackPanel>
-
     </Grid>
 </Window>

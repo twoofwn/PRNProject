@@ -5,23 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PRNProject.Pages
 {
-    /// <summary>
-    /// Interaction logic for ProjectPage.xaml
-    /// </summary>
     public partial class ProjectPage : Page
     {
         private readonly MyTaskContext _context = new MyTaskContext();
@@ -31,7 +22,7 @@ namespace PRNProject.Pages
         {
             InitializeComponent();
             _currentUser = currentUser;
-            this.Loaded += Page_Loaded; // Load data when page is ready
+            this.Loaded += Page_Loaded;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -42,14 +33,23 @@ namespace PRNProject.Pages
         private void LoadProjects()
         {
             if (_currentUser == null) return;
-            ProjectsItemsControl.ItemsSource = _context.Projects
-                                                  .Where(p => p.OwnerUserId == _currentUser.UserId)
-                                                  .ToList();
+
+            // *** CẬP NHẬT CÂU TRUY VẤN Ở ĐÂY ***
+            // Sử dụng Include để lấy thông tin Owner (Author)
+            // Sử dụng Include và ThenInclude để lấy danh sách thành viên
+            var projects = _context.Projects
+                .Include(p => p.OwnerUser)
+                .Include(p => p.ProjectMembers)
+                    .ThenInclude(pm => pm.User)
+                // Lấy các project mà user hiện tại là chủ sở hữu HOẶC là thành viên
+                .Where(p => p.OwnerUserId == _currentUser.UserId || p.ProjectMembers.Any(pm => pm.UserId == _currentUser.UserId))
+                .ToList();
+
+            ProjectsItemsControl.ItemsSource = projects;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            // Mở cửa sổ thêm Project
             var addWindow = new AddEditProjectWindow();
             if (addWindow.ShowDialog() == true)
             {
@@ -57,22 +57,19 @@ namespace PRNProject.Pages
                 newProject.OwnerUserId = _currentUser.UserId;
                 _context.Projects.Add(newProject);
                 _context.SaveChanges();
-                LoadProjects(); // Tải lại danh sách
+                LoadProjects();
             }
         }
 
-        // Sự kiện khi click vào một thẻ project
         private void ProjectCard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is Project selectedProject)
             {
-                // Điều hướng đến trang chi tiết project
                 this.NavigationService.Navigate(new ProjectBoardPage(selectedProject));
             }
         }
     }
 
-    // Converter để chuyển mã màu Hex thành Brush
     public class HexToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -82,14 +79,13 @@ namespace PRNProject.Pages
             {
                 return new SolidColorBrush(Colors.Transparent);
             }
-
             try
             {
                 return (SolidColorBrush)(new BrushConverter().ConvertFrom(hex));
             }
             catch
             {
-                return new SolidColorBrush(Colors.Gray); // Màu mặc định nếu mã hex lỗi
+                return new SolidColorBrush(Colors.Gray);
             }
         }
 

@@ -57,22 +57,49 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
             <Border Grid.Column="0" Style="{StaticResource KanbanColumnStyle}">
                 <StackPanel>
                     <TextBlock Text="CẦN LÀM (Todo)" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <ListView x:Name="TodoListView" ItemTemplate="{StaticResource TaskItemTemplate}" BorderThickness="0" Background="Transparent" AllowDrop="True" Drop="ListView_Drop" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" MouseMove="ListView_MouseMove"/>
+                    <ListView x:Name="TodoListView" 
+                              ItemTemplate="{StaticResource TaskItemTemplate}" 
+                              BorderThickness="0" 
+                              Background="Transparent" 
+                              AllowDrop="True" 
+                              Drop="ListView_Drop" 
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" 
+                              MouseMove="ListView_MouseMove"
+                              MouseDoubleClick="Task_MouseDoubleClick"/>
                 </StackPanel>
             </Border>
+
             <Border Grid.Column="1" Style="{StaticResource KanbanColumnStyle}">
                 <StackPanel>
                     <TextBlock Text="ĐANG LÀM (In Progress)" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <ListView x:Name="InProgressListView" ItemTemplate="{StaticResource TaskItemTemplate}" BorderThickness="0" Background="Transparent" AllowDrop="True" Drop="ListView_Drop" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" MouseMove="ListView_MouseMove"/>
+                    <ListView x:Name="InProgressListView" 
+                              ItemTemplate="{StaticResource TaskItemTemplate}" 
+                              BorderThickness="0" 
+                              Background="Transparent" 
+                              AllowDrop="True" 
+                              Drop="ListView_Drop" 
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" 
+                              MouseMove="ListView_MouseMove"
+                              MouseDoubleClick="Task_MouseDoubleClick"/>
                 </StackPanel>
             </Border>
+
             <Border Grid.Column="2" Style="{StaticResource KanbanColumnStyle}">
                 <StackPanel>
                     <TextBlock Text="HOÀN THÀNH (Done)" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <ListView x:Name="DoneListView" ItemTemplate="{StaticResource TaskItemTemplate}" BorderThickness="0" Background="Transparent" AllowDrop="True" Drop="ListView_Drop" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" MouseMove="ListView_MouseMove"/>
+                    <ListView x:Name="DoneListView" 
+                              ItemTemplate="{StaticResource TaskItemTemplate}" 
+                              BorderThickness="0" 
+                              Background="Transparent" 
+                              AllowDrop="True" 
+                              Drop="ListView_Drop" 
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" 
+                              MouseMove="ListView_MouseMove"
+                              MouseDoubleClick="Task_MouseDoubleClick"/>
                 </StackPanel>
             </Border>
         </Grid>
