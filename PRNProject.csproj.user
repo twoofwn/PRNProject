@@ -20,7 +20,10 @@
     <Compile Update="Pages\RegisterPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\TaskDetailWindow.xaml.cs">
+    <Compile Update="Pages\SettingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Windows\TaskDetailWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Windows\AddEditProjectWindow.xaml.cs">

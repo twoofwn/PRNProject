@@ -56,6 +56,23 @@ namespace PRNProject.Pages.Components
                     case "Tasks":
                         MessageBox.Show("Chức năng 'Tasks' chưa được triển khai.");
                         break;
+                    case "Setting":
+                        if (!(MainWindow.MainNavigationFrame.Content is SettingPage))
+                        {
+                            MainWindow.MainNavigationFrame.Navigate(new SettingPage(currentUser));
+                        }
+                        break;
+                    case "Logout":
+                        var result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất?",
+                                                     "Xác nhận đăng xuất",
+                                                     MessageBoxButton.YesNo,
+                                                     MessageBoxImage.Question);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            AppSession.CurrentUser = null;
+                            MainWindow.MainNavigationFrame.Navigate(new LoginPage());
+                        }
+                        break;
                 }
             }
         }
