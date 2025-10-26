@@ -29,6 +29,17 @@ namespace PRNProject.Pages
                 txtDisplayName.Text = _currentUser.DisplayName;
                 txtEmail.Text = _currentUser.Email;
             }
+            var previousLastLogin = AppSession.PreviousLastLogin;
+
+            if (previousLastLogin != null)
+            {
+                DateTime lastLoginLocal = previousLastLogin.Value.ToLocalTime();
+                txtLastLogin.Text = lastLoginLocal.ToString("HH:mm dd/MM/yyyy");
+            }
+            else
+            {
+                txtLastLogin.Text = "Đây là lần đăng nhập đầu tiên";
+            }
         }
 
         private void btnSaveInfo_Click(object sender, RoutedEventArgs e)

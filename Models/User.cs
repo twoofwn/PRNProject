@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PRNProject.Models;
 
@@ -24,4 +25,7 @@ public partial class User
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+
+    [InverseProperty("User")] 
+    public virtual UserSetting UserSetting { get; set; }
 }

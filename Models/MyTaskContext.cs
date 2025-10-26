@@ -30,6 +30,8 @@ public partial class MyTaskContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserSetting> UserSettings { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var config = new
@@ -169,9 +171,10 @@ public partial class MyTaskContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(200);
             entity.Property(e => e.PasswordHash).HasMaxLength(255);
             entity.Property(e => e.Username).HasMaxLength(100);
+            entity.HasOne(d => d.UserSetting)
+                .WithOne(p => p.User)
+                .HasForeignKey<UserSetting>(d => d.UserId);
         });
-
-        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

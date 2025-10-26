@@ -1,4 +1,5 @@
-﻿using PRNProject.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PRNProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,20 +29,45 @@ namespace PRNProject.Pages
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+
             using (var db = new MyTaskContext())
             {
                 string username = UsernameTextBox.Text;
                 string password = PasswordBox.Password;
 
                 var user = db.Users
+                             .Include(u => u.UserSetting)
                              .SingleOrDefault(u => u.Username == username
                                                 && u.PasswordHash == password);
 
                 if (user != null)
                 {
+                    if (user.UserSetting != null && user.UserSetting.LastLogin != null)
+                    {
+                        AppSession.PreviousLastLogin = user.UserSetting.LastLogin;
+                    }
+                    else
+                    {
+                        AppSession.PreviousLastLogin = null;
+                    }
+
                     AppSession.CurrentUser = user;
 
+                    if (user.UserSetting == null)
+                    {
+                        user.UserSetting = new UserSetting
+                        {
+                            UserId = user.UserId,
+                            Theme = "Sáng",
+                            Language = "Tiếng Việt"
+                        };
+                    }
+
+                    user.UserSetting.LastLogin = DateTime.UtcNow;
+                    db.SaveChanges();
+
                     this.NavigationService.Navigate(new HomePage(user.Username));
+                    
                 }
                 else
                 {

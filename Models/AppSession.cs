@@ -9,5 +9,6 @@ namespace PRNProject.Models
     public static class AppSession
     {
         public static User CurrentUser { get; set; }
+        public static DateTime? PreviousLastLogin { get; set; }
     }
 }
