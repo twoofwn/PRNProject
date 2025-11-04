@@ -62,6 +62,7 @@ namespace PRNProject.Pages
             if (_currentUser == null) return;
 
             var query = _context.Tasks
+                .AsNoTracking()
                 .Include(t => t.Priority)
                 .Include(t => t.Tags)
                 .Where(t => t.OwnerUserId == _currentUser.UserId);

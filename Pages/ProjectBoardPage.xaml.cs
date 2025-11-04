@@ -45,6 +45,7 @@ namespace PRNProject.Pages
         {
             if (_currentProject == null) return;
             var tasks = _context.Tasks
+                .AsNoTracking()
                 .Include(t => t.Priority)
                 .Where(t => t.ProjectId == _currentProject.ProjectId)
                 .ToList();
@@ -58,11 +59,14 @@ namespace PRNProject.Pages
         private void EditProjectButton_Click(object sender, RoutedEventArgs e)
         {
             var editWindow = new AddEditProjectWindow(_currentProject);
+
             if (editWindow.ShowDialog() == true)
             {
-                _context.Entry(_currentProject).State = EntityState.Modified;
-                _context.SaveChanges();
-                ProjectTitleTextBlock.Text = _currentProject.Title; // Update title on screen
+                _context.Entry(_currentProject).State = EntityState.Detached;
+
+                _currentProject = _context.Projects.Find(_currentProject.ProjectId);
+
+                ProjectTitleTextBlock.Text = _currentProject.Title;
             }
         }
 

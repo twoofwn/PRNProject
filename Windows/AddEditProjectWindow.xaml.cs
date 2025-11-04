@@ -17,10 +17,20 @@ namespace PRNProject.Windows
 
         private ObservableCollection<User> _selectedMembers;
         private User _projectOwner;
+        public List<string> PredefinedColors { get; set; }
 
         public AddEditProjectWindow(Project project = null)
         {
             InitializeComponent();
+
+            PredefinedColors = new List<string>
+    {
+        "#E63946", "#F1FAEE", "#A8DADC", "#457B9D", "#1D3557",
+        "#FF6B6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C",
+        "#F4A261", "#E76F51", "#8ECAE6", "#219EBC", "#2A9D8F",
+        "#9B5DE5", "#F15BB5", "#FEE440", "#00F5D4", "#00BBF9"
+    };
+            ColorPickerListBox.ItemsSource = PredefinedColors;
 
             Project = project ?? new Project();
             _selectedMembers = new ObservableCollection<User>();
@@ -35,13 +45,25 @@ namespace PRNProject.Windows
 
                 TitleTextBox.Text = Project.Title;
                 DescriptionTextBox.Text = Project.Description;
-                ColorHexTextBox.Text = Project.ColorHex;
                 _projectOwner = Project.OwnerUser;
+
+                if (!string.IsNullOrEmpty(Project.ColorHex) && PredefinedColors.Contains(Project.ColorHex))
+                {
+                    ColorPickerListBox.SelectedItem = Project.ColorHex;
+                }
+                else
+                {
+                    ColorPickerListBox.SelectedIndex = 0;
+                }
 
                 foreach (var member in Project.ProjectMembers)
                 {
                     _selectedMembers.Add(member.User);
                 }
+            }
+            else
+            {
+                ColorPickerListBox.SelectedIndex = 0;
             }
 
             SelectedMembersListBox.ItemsSource = _selectedMembers;
@@ -127,7 +149,8 @@ namespace PRNProject.Windows
 
             Project.Title = TitleTextBox.Text;
             Project.Description = DescriptionTextBox.Text;
-            Project.ColorHex = ColorHexTextBox.Text;
+
+            Project.ColorHex = ColorPickerListBox.SelectedItem as string;
 
             var currentMemberIds = Project.ProjectMembers.Select(pm => pm.UserId).ToList();
             var selectedMemberIds = _selectedMembers.Select(u => u.UserId).ToList();
@@ -143,6 +166,9 @@ namespace PRNProject.Windows
             {
                 Project.ProjectMembers.Add(new ProjectMember { UserId = userId, ProjectId = Project.ProjectId });
             }
+
+            _context.Entry(Project).State = EntityState.Modified;
+            _context.SaveChanges();
 
             this.DialogResult = true;
             this.Close();

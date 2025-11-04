@@ -10,28 +10,138 @@
 
     <Page.Resources>
         <local:PriorityToColorConverter x:Key="PriorityToColorConverter"/>
+
+        <SolidColorBrush x:Key="ColumnBackgroundBrush" Color="#F0F2F5"/>
+        <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#0078D4"/>
+        <SolidColorBrush x:Key="DangerBrush" Color="#D32F2F"/>
+        <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#172B4D"/>
+        <SolidColorBrush x:Key="SubtleTextBrush" Color="#5E6C84"/>
+
         <Style TargetType="Border" x:Key="KanbanColumnStyle">
-            <Setter Property="Background" Value="#F4F5F7"/>
-            <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="{StaticResource ColumnBackgroundBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="10"/>
             <Setter Property="Margin" Value="5,0"/>
         </Style>
+
+        <Style x:Key="ColumnHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource HeaderForegroundBrush}"/>
+            <Setter Property="Margin" Value="5,0,0,10"/>
+        </Style>
+
+        <Style x:Key="KanbanListViewStyle" TargetType="ListView">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <DataTemplate x:Key="TaskItemTemplate">
-            <Border Background="White" CornerRadius="3" Padding="10" Margin="0,5" BorderThickness="1" BorderBrush="#DDDDDD">
+            <Border Background="{StaticResource CardBackgroundBrush}" 
+                CornerRadius="5" 
+                Padding="10" 
+                Margin="0,5">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Color="#AAAAAA" Opacity="0.3" BlurRadius="5" Direction="270"/>
+                </Border.Effect>
+
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Height="8" CornerRadius="3,3,0,0" Margin="-10,-10,-10,5" Background="{Binding PriorityId, Converter={StaticResource PriorityToColorConverter}}"/>
-                    <TextBlock Grid.Row="0" Text="{Binding Title}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,0"/>
-                    <TextBlock Grid.Row="1" Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}" Foreground="Gray" FontSize="11" Margin="0,5,0,0"/>
+                    <Border Grid.Row="0" Height="8" CornerRadius="5,5,0,0" Margin="-10,-10,-10,5" 
+                        Background="{Binding PriorityId, Converter={StaticResource PriorityToColorConverter}}"/>
+                    <TextBlock Grid.Row="0" Text="{Binding Title}" FontWeight="SemiBold" 
+                           Foreground="{StaticResource HeaderForegroundBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                    <TextBlock Grid.Row="1" Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}" 
+                           Foreground="{StaticResource SubtleTextBrush}" FontSize="11" Margin="0,5,0,0"/>
                 </Grid>
             </Border>
         </DataTemplate>
+
+        <Style x:Key="BaseButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#004578"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="11,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E5F1FB"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#CCE4F9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource DangerBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#B71C1C"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A51A1A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Page.Resources>
 
-    <Grid Margin="15">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -39,16 +149,32 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-            <Button Content="&lt; Quay lại" Click="BackButton_Click" VerticalAlignment="Center" Padding="8,4"/>
-            <TextBlock x:Name="ProjectTitleTextBlock" Text="Project Title" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center"/>
+            <Button Content="&lt; Quay lại" Click="BackButton_Click" VerticalAlignment="Center" 
+                Style="{StaticResource SecondaryButtonStyle}"/>
+
+            <TextBlock x:Name="ProjectTitleTextBlock" Text="Project Title" 
+                   FontSize="22" FontWeight="Bold" Margin="15,0,0,0" 
+                   VerticalAlignment="Center" 
+                   Foreground="{StaticResource HeaderForegroundBrush}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-            <Button Content="Thêm Task" Click="AddTask_Click"/>
-            <Button Content="Sửa Task" Margin="10,0" Click="EditTask_Click"/>
-            <Button Content="Xóa Task" Background="IndianRed" Foreground="White" Click="DeleteTask_Click"/>
-            <Button Content="Sửa Project" Margin="20,0,0,0" Click="EditProjectButton_Click"/>
-            <Button Content="Xóa Project" Margin="10,0,0,0" Background="#D32F2F" Foreground="White" Click="DeleteProjectButton_Click"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+            <Button Content="Thêm Task" Click="AddTask_Click" 
+                Style="{StaticResource PrimaryButtonStyle}"/>
+
+            <Button Content="Sửa Task" Margin="10,0" Click="EditTask_Click" 
+                Style="{StaticResource SecondaryButtonStyle}"/>
+
+            <Button Content="Xóa Task" Click="DeleteTask_Click" 
+                Style="{StaticResource DangerButtonStyle}"/>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="15,0"/>
+
+            <Button Content="Sửa Project" Click="EditProjectButton_Click" 
+                Style="{StaticResource SecondaryButtonStyle}"/>
+
+            <Button Content="Xóa Project" Margin="10,0,0,0" Click="DeleteProjectButton_Click" 
+                Style="{StaticResource DangerButtonStyle}"/>
         </StackPanel>
 
         <Grid Grid.Row="2">
@@ -60,46 +186,40 @@
 
             <Border Grid.Column="0" Style="{StaticResource KanbanColumnStyle}">
                 <StackPanel>
-                    <TextBlock Text="CẦN LÀM (Todo)" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock Text="CẦN LÀM (Todo)" Style="{StaticResource ColumnHeaderStyle}"/>
                     <ListView x:Name="TodoListView" 
-                              ItemTemplate="{StaticResource TaskItemTemplate}" 
-                              BorderThickness="0" 
-                              Background="Transparent" 
-                              AllowDrop="True" 
-                              Drop="ListView_Drop" 
-                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" 
-                              MouseMove="ListView_MouseMove"
-                              MouseDoubleClick="Task_MouseDoubleClick"/>
+                          Style="{StaticResource KanbanListViewStyle}"
+                          ItemTemplate="{StaticResource TaskItemTemplate}" 
+                          AllowDrop="True" Drop="ListView_Drop" 
+                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                          MouseMove="ListView_MouseMove"
+                          MouseDoubleClick="Task_MouseDoubleClick"/>
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="1" Style="{StaticResource KanbanColumnStyle}">
                 <StackPanel>
-                    <TextBlock Text="ĐANG LÀM (In Progress)" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock Text="ĐANG LÀM (In Progress)" Style="{StaticResource ColumnHeaderStyle}"/>
                     <ListView x:Name="InProgressListView" 
-                              ItemTemplate="{StaticResource TaskItemTemplate}" 
-                              BorderThickness="0" 
-                              Background="Transparent" 
-                              AllowDrop="True" 
-                              Drop="ListView_Drop" 
-                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" 
-                              MouseMove="ListView_MouseMove"
-                              MouseDoubleClick="Task_MouseDoubleClick"/>
+                          Style="{StaticResource KanbanListViewStyle}"
+                          ItemTemplate="{StaticResource TaskItemTemplate}" 
+                          AllowDrop="True" Drop="ListView_Drop"
+                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                          MouseMove="ListView_MouseMove"
+                          MouseDoubleClick="Task_MouseDoubleClick"/>
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="2" Style="{StaticResource KanbanColumnStyle}">
                 <StackPanel>
-                    <TextBlock Text="HOÀN THÀNH (Done)" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock Text="HOÀN THÀNH (Done)" Style="{StaticResource ColumnHeaderStyle}"/>
                     <ListView x:Name="DoneListView" 
-                              ItemTemplate="{StaticResource TaskItemTemplate}" 
-                              BorderThickness="0" 
-                              Background="Transparent" 
-                              AllowDrop="True" 
-                              Drop="ListView_Drop" 
-                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown" 
-                              MouseMove="ListView_MouseMove"
-                              MouseDoubleClick="Task_MouseDoubleClick"/>
+                          Style="{StaticResource KanbanListViewStyle}"
+                          ItemTemplate="{StaticResource TaskItemTemplate}" 
+                          AllowDrop="True" Drop="ListView_Drop"
+                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                          MouseMove="ListView_MouseMove"
+                          MouseDoubleClick="Task_MouseDoubleClick"/>
                 </StackPanel>
             </Border>
         </Grid>

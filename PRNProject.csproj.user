@@ -1,8 +1,11 @@
-﻿<?xml version='1.0' encoding='UTF-8' ?> 
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- was: no XML declaration present -->
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Pages\CalendarPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Components\Sidebar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

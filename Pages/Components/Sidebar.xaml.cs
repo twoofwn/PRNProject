@@ -53,8 +53,11 @@ namespace PRNProject.Pages.Components
                             MainWindow.MainNavigationFrame.Navigate(new ProjectPage(currentUser));
                         }
                         break;
-                    case "Tasks":
-                        MessageBox.Show("Chức năng 'Tasks' chưa được triển khai.");
+                    case "Calendar":
+                        if (!(MainWindow.MainNavigationFrame.Content is CalendarPage))
+                        {
+                            MainWindow.MainNavigationFrame.Navigate(new CalendarPage(currentUser));
+                        }
                         break;
                     case "Setting":
                         if (!(MainWindow.MainNavigationFrame.Content is SettingPage))

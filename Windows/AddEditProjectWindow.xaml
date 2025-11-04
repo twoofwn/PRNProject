@@ -7,7 +7,120 @@
         mc:Ignorable="d"
         Title="Quản lý Project" Height="550" Width="500"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid Margin="15">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#0078D4"/>
+        <SolidColorBrush x:Key="DangerBrush" Color="#D32F2F"/>
+        <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#172B4D"/>
+        <SolidColorBrush x:Key="SubtleTextBrush" Color="#5E6C84"/>
+
+        <Style x:Key="FormLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource HeaderForegroundBrush}"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                          HorizontalScrollBarVisibility="Hidden" 
+                                          VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                <Setter Property="Padding" Value="7,5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernTextAreaStyle" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <Style x:Key="BaseButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#004578"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="#EFEFEF"/>
+            <Setter Property="Foreground" Value="#222"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="11,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E0E0E0"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#D6D6D6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource DangerBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#B71C1C"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#A51A1A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -21,33 +134,70 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Tiêu đề:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="TitleTextBox" Padding="5"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Tiêu đề:" Style="{StaticResource FormLabelStyle}" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="TitleTextBox" Style="{StaticResource ModernTextBoxStyle}"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Mô tả:" Margin="0,15,10,0" VerticalAlignment="Top"/>
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="DescriptionTextBox" Padding="5" Margin="0,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="80"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Mô tả:" Style="{StaticResource FormLabelStyle}" Margin="0,15,10,0" VerticalAlignment="Top"/>
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="DescriptionTextBox" Style="{StaticResource ModernTextAreaStyle}" Margin="0,15,0,0" Height="80"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Mã màu (Hex):" VerticalAlignment="Center" Margin="0,15,10,0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" x:Name="ColorHexTextBox" Padding="5" Margin="0,15,0,0" ToolTip="Ví dụ: #4CAF50"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Chọn màu:" Style="{StaticResource FormLabelStyle}" VerticalAlignment="Top" Margin="0,15,10,0"/>
+        <ListBox Grid.Row="2" Grid.Column="1" x:Name="ColorPickerListBox" Margin="0,15,0,0"
+                 BorderThickness="0" Background="Transparent"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Width="30" Height="30" CornerRadius="15" 
+                            Background="{Binding}" Margin="3"
+                            ToolTip="{Binding}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="border" BorderBrush="Transparent" BorderThickness="2" CornerRadius="17" Padding="1">
+                                    <ContentPresenter/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="BorderBrush" Value="#AAAAAA"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Thêm thành viên:" VerticalAlignment="Center" Margin="0,15,10,0"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Thêm thành viên:" Style="{StaticResource FormLabelStyle}" VerticalAlignment="Center" Margin="0,15,10,0"/>
         <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,15,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" x:Name="MemberSearchTextBox" Padding="5" TextChanged="MemberSearchTextBox_TextChanged"/>
-                <Button Grid.Column="1" Content="Thêm" Width="60" Margin="5,0,0,0" Click="AddMemberButton_Click"/>
+                <TextBox Grid.Column="0" x:Name="MemberSearchTextBox" Style="{StaticResource ModernTextBoxStyle}" TextChanged="MemberSearchTextBox_TextChanged"/>
+                <Button Grid.Column="1" Content="Thêm" Margin="5,0,0,0" Style="{StaticResource PrimaryButtonStyle}" Click="AddMemberButton_Click"/>
             </Grid>
             <Popup x:Name="SearchPopup" IsOpen="False" StaysOpen="False" PlacementTarget="{Binding ElementName=MemberSearchTextBox}" Width="{Binding ActualWidth, ElementName=MemberSearchTextBox}">
                 <Border Background="White" BorderBrush="Gray" BorderThickness="1">
                     <ListBox x:Name="SearchResultsListBox" MaxHeight="120" MouseUp="SearchResultsListBox_MouseUp">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" Margin="4">
                                     <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding Username, StringFormat=' ({0})'}" Foreground="Gray" Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding Username, StringFormat=' ({0})'}" Foreground="{StaticResource SubtleTextBrush}" Margin="5,0,0,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -56,10 +206,23 @@
             </Popup>
         </StackPanel>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Thành viên hiện tại:" VerticalAlignment="Top" Margin="0,15,10,0"/>
-        <Border Grid.Row="4" Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="0,15,0,0">
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Thành viên:" Style="{StaticResource FormLabelStyle}" VerticalAlignment="Top" Margin="0,15,10,0"/>
+        <Border Grid.Row="4" Grid.Column="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Margin="0,15,0,0" CornerRadius="4" Background="White">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ListBox x:Name="SelectedMembersListBox" BorderThickness="0">
+                <ListBox x:Name="SelectedMembersListBox" BorderThickness="0" Background="Transparent">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+                                            <ContentPresenter Margin="8,5"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -69,9 +232,9 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding Username, StringFormat=' ({0})'}" Foreground="Gray" Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding Username, StringFormat=' ({0})'}" Foreground="{StaticResource SubtleTextBrush}" Margin="5,0,0,0"/>
                                 </StackPanel>
-                                <Button Grid.Column="1" Content="Xóa" Background="IndianRed" Foreground="White" Padding="5,2" Click="RemoveMemberButton_Click"
+                                <Button Grid.Column="1" Content="Xóa" Style="{StaticResource DangerButtonStyle}" Click="RemoveMemberButton_Click"
                                         Tag="{Binding}"/>
                             </Grid>
                         </DataTemplate>
@@ -80,9 +243,9 @@
             </ScrollViewer>
         </Border>
 
-        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button Content="Lưu" Width="80" Padding="8,5" Margin="0,0,10,0" IsDefault="True" Click="SaveButton_Click"/>
-            <Button Content="Hủy" Width="80" Padding="8,5" IsCancel="True" Click="CancelButton_Click"/>
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Lưu" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,10,0" IsDefault="True" Click="SaveButton_Click"/>
+            <Button Content="Hủy" Style="{StaticResource SecondaryButtonStyle}" IsCancel="True" Click="CancelButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

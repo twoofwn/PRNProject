@@ -34,14 +34,11 @@ namespace PRNProject.Pages
         {
             if (_currentUser == null) return;
 
-            // *** CẬP NHẬT CÂU TRUY VẤN Ở ĐÂY ***
-            // Sử dụng Include để lấy thông tin Owner (Author)
-            // Sử dụng Include và ThenInclude để lấy danh sách thành viên
             var projects = _context.Projects
+                .AsNoTracking()
                 .Include(p => p.OwnerUser)
                 .Include(p => p.ProjectMembers)
                     .ThenInclude(pm => pm.User)
-                // Lấy các project mà user hiện tại là chủ sở hữu HOẶC là thành viên
                 .Where(p => p.OwnerUserId == _currentUser.UserId || p.ProjectMembers.Any(pm => pm.UserId == _currentUser.UserId))
                 .ToList();
 

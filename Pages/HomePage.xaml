@@ -13,29 +13,142 @@
     <Page.Resources>
         <local:PriorityToColorConverter x:Key="PriorityToColorConverter"/>
 
+        <SolidColorBrush x:Key="ColumnBackgroundBrush" Color="#F0F2F5"/>
+        <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#0078D4"/>
+        <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#172B4D"/>
+        <SolidColorBrush x:Key="SubtleTextBrush" Color="#5E6C84"/>
+
         <Style TargetType="Border" x:Key="KanbanColumnStyle">
-            <Setter Property="Background" Value="#F4F5F7"/>
-            <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="{StaticResource ColumnBackgroundBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="10"/>
             <Setter Property="Margin" Value="5,0"/>
         </Style>
 
+        <Style x:Key="ColumnHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource HeaderForegroundBrush}"/>
+            <Setter Property="Margin" Value="5,0,0,10"/>
+        </Style>
+
+        <Style x:Key="KanbanListViewStyle" TargetType="ListView">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <DataTemplate x:Key="TaskItemTemplate">
-            <Border Background="White" CornerRadius="3" Padding="10" Margin="0,5" BorderThickness="1" BorderBrush="#DDDDDD">
+            <Border Background="{StaticResource CardBackgroundBrush}" 
+                CornerRadius="5" 
+                Padding="10" 
+                Margin="0,5">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Color="#AAAAAA" Opacity="0.3" BlurRadius="5" Direction="270"/>
+                </Border.Effect>
+
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" Height="8" CornerRadius="3,3,0,0" Margin="-10,-10,-10,5" 
-                            Background="{Binding PriorityId, Converter={StaticResource PriorityToColorConverter}}"/>
+                    <Border Grid.Row="0" Height="8" CornerRadius="5,5,0,0" Margin="-10,-10,-10,5" 
+                        Background="{Binding PriorityId, Converter={StaticResource PriorityToColorConverter}}"/>
 
-                    <TextBlock Grid.Row="0" Text="{Binding Title}" FontWeight="Bold" TextWrapping="Wrap" Margin="0,5,0,0"/>
-                    <TextBlock Grid.Row="1" Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}" Foreground="Gray" FontSize="11" Margin="0,5,0,0"/>
+                    <TextBlock Grid.Row="0" Text="{Binding Title}" FontWeight="SemiBold" 
+                           Foreground="{StaticResource HeaderForegroundBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+
+                    <TextBlock Grid.Row="1" Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}" 
+                           Foreground="{StaticResource SubtleTextBrush}" FontSize="11" Margin="0,5,0,0"/>
                 </Grid>
             </Border>
         </DataTemplate>
+
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                      HorizontalScrollBarVisibility="Hidden" 
+                                      VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                                <Setter Property="Padding" Value="7,5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#005A9E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#004578"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <DockPanel LastChildFill="True">
@@ -47,20 +160,31 @@
 
         <components:Sidebar x:Name="SidebarControl" DockPanel.Dock="Left"/>
 
-        <Grid Margin="10">
+        <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="BẢNG CÔNG VIỆC" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Grid.Row="0" Text="BẢNG CÔNG VIỆC" FontSize="22" FontWeight="Bold" 
+                   Margin="0,0,0,15" Foreground="{StaticResource HeaderForegroundBrush}"/>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBox x:Name="SearchTextBox" Width="200" Margin="0,0,10,0" TextChanged="SearchTextBox_TextChanged" ToolTip="Tìm kiếm theo tiêu đề công việc"/>
-                <ComboBox x:Name="PriorityFilterComboBox" Width="150" Margin="0,0,10,0" SelectionChanged="Filter_SelectionChanged" ToolTip="Lọc theo độ ưu tiên"/>
-                <ComboBox x:Name="TagFilterComboBox" Width="150" SelectionChanged="Filter_SelectionChanged" ToolTip="Lọc theo nhãn"/>
-                <Button Content="Xóa lọc" Click="ClearFilterButton_Click" Margin="5,0,0,0"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+                <TextBox x:Name="SearchTextBox" Width="200" Margin="0,0,10,0" 
+                     TextChanged="SearchTextBox_TextChanged" ToolTip="Tìm kiếm theo tiêu đề công việc"
+                     Style="{StaticResource ModernTextBoxStyle}"/>
+
+                <ComboBox x:Name="PriorityFilterComboBox" Width="150" Margin="0,0,10,0" 
+                      SelectionChanged="Filter_SelectionChanged" ToolTip="Lọc theo độ ưu tiên"
+                      Style="{StaticResource ModernComboBoxStyle}"/>
+
+                <ComboBox x:Name="TagFilterComboBox" Width="150" Margin="0,0,10,0" 
+                      SelectionChanged="Filter_SelectionChanged" ToolTip="Lọc theo nhãn"
+                      Style="{StaticResource ModernComboBoxStyle}"/>
+
+                <Button Content="Xóa lọc" Click="ClearFilterButton_Click" Margin="5,0,0,0"
+                    Style="{StaticResource ModernButtonStyle}"/>
             </StackPanel>
 
             <Grid Grid.Row="2">
@@ -72,42 +196,42 @@
 
                 <Border Grid.Column="0" Style="{StaticResource KanbanColumnStyle}">
                     <StackPanel>
-                        <TextBlock Text="CẦN LÀM (Todo)" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBlock Text="CẦN LÀM (Todo)" Style="{StaticResource ColumnHeaderStyle}"/>
                         <ListView x:Name="TodoListView" 
-                                  ItemTemplate="{StaticResource TaskItemTemplate}" 
-                                  BorderThickness="0" Background="Transparent"
-                                  AllowDrop="True" Drop="ListView_Drop" 
-                                  PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                                  MouseMove="ListView_MouseMove"
-                                  MouseDoubleClick="Task_MouseDoubleClick">
+                              Style="{StaticResource KanbanListViewStyle}"
+                              ItemTemplate="{StaticResource TaskItemTemplate}" 
+                              AllowDrop="True" Drop="ListView_Drop" 
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                              MouseMove="ListView_MouseMove"
+                              MouseDoubleClick="Task_MouseDoubleClick">
                         </ListView>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="1" Style="{StaticResource KanbanColumnStyle}">
                     <StackPanel>
-                        <TextBlock Text="ĐANG LÀM (In Progress)" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBlock Text="ĐANG LÀM (In Progress)" Style="{StaticResource ColumnHeaderStyle}"/>
                         <ListView x:Name="InProgressListView" 
-                                  ItemTemplate="{StaticResource TaskItemTemplate}" 
-                                  BorderThickness="0" Background="Transparent"
-                                  AllowDrop="True" Drop="ListView_Drop"
-                                  PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                                  MouseMove="ListView_MouseMove"
-                                  MouseDoubleClick="Task_MouseDoubleClick">
+                              Style="{StaticResource KanbanListViewStyle}"
+                              ItemTemplate="{StaticResource TaskItemTemplate}" 
+                              AllowDrop="True" Drop="ListView_Drop"
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                              MouseMove="ListView_MouseMove"
+                              MouseDoubleClick="Task_MouseDoubleClick">
                         </ListView>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="2" Style="{StaticResource KanbanColumnStyle}">
                     <StackPanel>
-                        <TextBlock Text="HOÀN THÀNH (Done)" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <TextBlock Text="HOÀN THÀNH (Done)" Style="{StaticResource ColumnHeaderStyle}"/>
                         <ListView x:Name="DoneListView" 
-                                  ItemTemplate="{StaticResource TaskItemTemplate}" 
-                                  BorderThickness="0" Background="Transparent"
-                                  AllowDrop="True" Drop="ListView_Drop"
-                                  PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                                  MouseMove="ListView_MouseMove"
-                                  MouseDoubleClick="Task_MouseDoubleClick">
+                              Style="{StaticResource KanbanListViewStyle}"
+                              ItemTemplate="{StaticResource TaskItemTemplate}" 
+                              AllowDrop="True" Drop="ListView_Drop"
+                              PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                              MouseMove="ListView_MouseMove"
+                              MouseDoubleClick="Task_MouseDoubleClick">
                         </ListView>
                     </StackPanel>
                 </Border>
