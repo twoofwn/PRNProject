@@ -19,6 +19,7 @@ public partial class User
     public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    [InverseProperty("User")]
 
     public virtual ICollection<ProjectMember> ProjectMembers { get; set; } = new List<ProjectMember>();
 
@@ -28,6 +29,5 @@ public partial class User
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 
-    [InverseProperty("User")] 
-    public virtual UserSetting UserSetting { get; set; }
+    
 }
