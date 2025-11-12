@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,6 +46,13 @@ namespace PRNProject.Pages
             if (password != confirmPassword)
             {
                 MessageBox.Show("Mật khẩu và xác nhận mật khẩu không khớp!", "Lỗi",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Email không đúng định dạng! Vui lòng nhập lại.", "Lỗi",
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -93,6 +101,15 @@ namespace PRNProject.Pages
         private void GoToLoginButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new LoginPage());
+        }
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            // Regex kiểm tra email hợp lệ cơ bản
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
         }
     }
 }

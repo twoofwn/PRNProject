@@ -1,6 +1,7 @@
 ﻿using PRNProject.Models;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -43,6 +44,12 @@ namespace PRNProject.Pages
                 if (string.IsNullOrWhiteSpace(txtEmail.Text))
                 {
                     ShowMessage("Email không được để trống.", true);
+                    return;
+                }
+                if (!IsValidEmail(txtEmail.Text))
+                {
+                    MessageBox.Show("Email không đúng định dạng! Vui lòng nhập lại.", "Lỗi",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 // tìm trong database
@@ -135,6 +142,15 @@ namespace PRNProject.Pages
             {
                 MainWindow.MainNavigationFrame.Navigate(new HomePage(_currentUser.Username));
             }
+        }
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            // Regex kiểm tra email hợp lệ cơ bản
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
         }
     }
 }
