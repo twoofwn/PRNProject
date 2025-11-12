@@ -66,20 +66,20 @@ namespace PRNProject.Pages
                 .Include(t => t.Tags)
                 .Where(t => t.OwnerUserId == _currentUser.UserId);
 
-            // Apply search filter
+            // search filter
             string searchText = SearchTextBox.Text.Trim().ToLower();
             if (!string.IsNullOrEmpty(searchText))
             {
                 query = query.Where(t => t.Title.ToLower().Contains(searchText));
             }
 
-            // Apply priority filter
+            // priority filter
             if (PriorityFilterComboBox.SelectedValue is int priorityId && priorityId > 0)
             {
                 query = query.Where(t => t.PriorityId == priorityId);
             }
 
-            // Apply tag filter
+            // tag filter
             if (TagFilterComboBox.SelectedValue is int tagId && tagId > 0)
             {
                 query = query.Where(t => t.Tags.Any(tt => tt.TagId == tagId));
@@ -101,7 +101,7 @@ namespace PRNProject.Pages
 
         private void Filter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Ensure the event handler is not called during initialization
+            // đảm bảo element đã được nạp
             if (IsLoaded)
             {
                 LoadTasks();
@@ -116,7 +116,7 @@ namespace PRNProject.Pages
             LoadTasks();
         }
 
-        // Drag and Drop Logic
+        // logic kéo thả
         private void ListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _startPoint = e.GetPosition(null);
@@ -164,14 +164,13 @@ namespace PRNProject.Pages
                     {
                         taskInDb.StatusId = newStatusId;
                         _context.SaveChanges();
-                        LoadTasks(); // Refresh the board
+                        LoadTasks(); 
                     }
                 }
             }
             _isDragging = false;
         }
 
-        // Helper to find parent control in visual tree
         private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
         {
             do
@@ -186,7 +185,7 @@ namespace PRNProject.Pages
             return null;
         }
 
-        // Navigation to Task Details Page
+        // chi tiết task
         private void Task_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var listView = sender as ListView;
@@ -211,6 +210,7 @@ namespace PRNProject.Pages
         }
     }
 
+    // chuyển độ ưu tiên sang màu
     public class PriorityToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

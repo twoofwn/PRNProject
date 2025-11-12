@@ -100,11 +100,11 @@ namespace PRNProject.Pages
             NoTasksTextBlock.Text = message;
             if (tasks.Any())
             {
-                NoTasksTextBlock.Visibility = Visibility.Collapsed;
+                NoTasksTextBlock.Visibility = Visibility.Collapsed; // ẩn thông báo
             }
             else
             {
-                NoTasksTextBlock.Visibility = Visibility.Visible;
+                NoTasksTextBlock.Visibility = Visibility.Visible; // hiện thông báo
             }
         }
     }

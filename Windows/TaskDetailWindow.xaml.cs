@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PRNProject.Pages // <-- ĐÃ SỬA
+namespace PRNProject.Pages 
 {
     /// <summary>
     /// Interaction logic for TaskDetailWindow.xaml
@@ -156,7 +156,7 @@ namespace PRNProject.Pages // <-- ĐÃ SỬA
                 {
                     _context.Tasks.Remove(_currentTask);
                     _context.SaveChanges();
-                    this.DialogResult = true; // Báo hiệu đã xóa (để trang Home refresh)
+                    this.DialogResult = true; 
                     this.Close();
                 }
                 catch (Exception ex)
@@ -168,7 +168,7 @@ namespace PRNProject.Pages // <-- ĐÃ SỬA
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false; // Báo hiệu hủy
+            this.DialogResult = false; 
             this.Close();
         }
 

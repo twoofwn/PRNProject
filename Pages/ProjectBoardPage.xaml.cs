@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PRNProject.Models;
-using PRNProject.Windows; // Đảm bảo TaskDetailWindow nằm trong namespace này
+using PRNProject.Windows; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,7 +91,7 @@ namespace PRNProject.Pages
             {
                 var newTask = addWindow.Task;
                 newTask.ProjectId = _currentProject.ProjectId;
-                newTask.OwnerUserId = _currentProject.OwnerUserId; // Gán cho cùng owner
+                newTask.OwnerUserId = _currentProject.OwnerUserId; 
                 _context.Tasks.Add(newTask);
                 _context.SaveChanges();
                 LoadBoard();
@@ -113,11 +113,10 @@ namespace PRNProject.Pages
                 return;
             }
 
-            // Giả định bạn có một cửa sổ tên là TaskDetailWindow để hiển thị chi tiết
             var detailWindow = new TaskDetailWindow(selectedTask, projectOwner);
             if (detailWindow.ShowDialog() == true)
             {
-                LoadBoard(); // Tải lại bảng sau khi chỉnh sửa
+                LoadBoard(); 
             }
         }
 
@@ -167,11 +166,11 @@ namespace PRNProject.Pages
                     return;
                 }
 
-                // Giả định bạn có một cửa sổ tên là TaskDetailWindow để hiển thị chi tiết
+                // mở cửa sổ task detail
                 var detailWindow = new TaskDetailWindow(selectedTask, projectOwner);
                 if (detailWindow.ShowDialog() == true)
                 {
-                    LoadBoard(); // Tải lại bảng sau khi chỉnh sửa
+                    LoadBoard(); // tải lại board
                 }
             }
         }
