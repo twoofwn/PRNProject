@@ -75,10 +75,23 @@ namespace PRNProject.Pages
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa project '{_currentProject.Title}' và tất cả các task bên trong không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
-                _context.Projects.Remove(_currentProject);
-                _context.SaveChanges();
-                // Quay lại trang danh sách project
-                if (NavigationService.CanGoBack) NavigationService.GoBack();
+                // Tìm lại project từ context bằng Id
+                var projectToDelete = _context.Projects
+                    .Include(p => p.Tasks)
+                    .FirstOrDefault(p => p.ProjectId == _currentProject.ProjectId);
+
+                if (projectToDelete != null)
+                {
+                    _context.Projects.Remove(projectToDelete);
+                    _context.SaveChanges();
+
+                    if (NavigationService.CanGoBack)
+                        NavigationService.GoBack();
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy project để xóa!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
         #endregion
