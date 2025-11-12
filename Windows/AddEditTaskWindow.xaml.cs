@@ -78,6 +78,7 @@ namespace PRNProject.Windows
             Task.Description = DescriptionTextBox.Text?.Trim();
             Task.PriorityId = (int)PriorityComboBox.SelectedValue;
             Task.StatusId = (int)StatusComboBox.SelectedValue;
+            Task.StartAt  = DateTime.Now;
             Task.DueAt = DueDatePicker.SelectedDate;
 
             DialogResult = true;

@@ -133,9 +133,13 @@ namespace PRNProject.Pages
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa task '{selectedTask.Title}' không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
-                _context.Tasks.Remove(selectedTask);
-                _context.SaveChanges();
-                LoadBoard();
+                var taskToDelete = _context.Tasks.Find(selectedTask.TaskId);
+                if (taskToDelete != null)
+                {
+                    _context.Tasks.Remove(taskToDelete);
+                    _context.SaveChanges();
+                    LoadBoard();
+                }
             }
         }
 
