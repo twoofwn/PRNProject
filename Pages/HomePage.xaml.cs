@@ -31,7 +31,6 @@ namespace PRNProject.Pages
             if (_currentUser == null)
             {
                 MessageBox.Show("Không tìm thấy người dùng. Vui lòng đăng nhập lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                // Có thể điều hướng về trang đăng nhập ở đây
                 return;
             }
             LoadFilters();

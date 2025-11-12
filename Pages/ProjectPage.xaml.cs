@@ -34,8 +34,9 @@ namespace PRNProject.Pages
         {
             if (_currentUser == null) return;
 
+            // chỉ lấy các project user sở hữu || user là thành viên
             var projects = _context.Projects
-                .AsNoTracking()
+                .AsNoTracking()                         // tối ưu hiệu suất khi chỉ đọc dữ liệu
                 .Include(p => p.OwnerUser)
                 .Include(p => p.ProjectMembers)
                     .ThenInclude(pm => pm.User)
@@ -58,6 +59,7 @@ namespace PRNProject.Pages
             }
         }
 
+        // khi click vào 1 thẻ project , lấy datacontext của thẻ đó và truyền vào project board page
         private void ProjectCard_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement element && element.DataContext is Project selectedProject)
@@ -69,6 +71,7 @@ namespace PRNProject.Pages
 
     public class HexToBrushConverter : IValueConverter
     {
+        // lấy chuỗi màu dạng #... từ DB , chuyển thành solid color , lỗi, rỗng -> return Transparent , Gray
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string hex = value as string;

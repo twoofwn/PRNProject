@@ -9,56 +9,52 @@
       Title="SettingPage"
       Background="#FFFFFF">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Cài đặt" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,20"/>
 
-            <TextBlock Grid.Row="0" Text="Cài đặt" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,20"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="Thông tin cá nhân" FontSize="18" FontWeight="Medium" Margin="0,0,0,10"/>
+                    <TextBlock Text="Tên hiển thị:" Margin="0,10,0,5"/>
+                    <TextBox x:Name="txtDisplayName" Padding="5" FontSize="14"/>
+                    <TextBlock Text="Email:" Margin="0,10,0,5"/>
+                    <TextBox x:Name="txtEmail" Padding="5" FontSize="14"/>
+                    <Button x:Name="btnSaveInfo" Content="Lưu thay đổi" Width="150" HorizontalAlignment="Left" Margin="0,15,0,0" Click="btnSaveInfo_Click"/>
+                </StackPanel>
+            </Border>
 
-                <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,10,0">
-                    <StackPanel>
-                        <TextBlock Text="Thông tin cá nhân" FontSize="18" FontWeight="Medium" Margin="0,0,0,10"/>
-                        <TextBlock Text="Tên hiển thị:" Margin="0,10,0,5"/>
-                        <TextBox x:Name="txtDisplayName" Padding="5" FontSize="14"/>
-                        <TextBlock Text="Email:" Margin="0,10,0,5"/>
-                        <TextBox x:Name="txtEmail" Padding="5" FontSize="14"/>
-                        <Button x:Name="btnSaveInfo" Content="Lưu thay đổi" Width="150" HorizontalAlignment="Left" Margin="0,15,0,0" Click="btnSaveInfo_Click"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="1" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="8" Padding="15" Margin="10,0,0,0">
-                    <StackPanel>
-                        <TextBlock Text="Đổi mật khẩu" FontSize="18" FontWeight="Medium" Margin="0,0,0,10"/>
-                        <TextBlock Text="Mật khẩu cũ:" Margin="0,10,0,5"/>
-                        <PasswordBox x:Name="txtOldPassword" Padding="5" FontSize="14"/>
-                        <TextBlock Text="Mật khẩu mới:" Margin="0,10,0,5"/>
-                        <PasswordBox x:Name="txtNewPassword" Padding="5" FontSize="14"/>
-                        <TextBlock Text="Xác nhận mật khẩu:" Margin="0,10,0,5"/>
-                        <PasswordBox x:Name="txtConfirmNewPassword" Padding="5" FontSize="14"/>
-                        <Button x:Name="btnChangePassword" Content="Đổi mật khẩu" Width="150" HorizontalAlignment="Left" Margin="0,15,0,0" Click="btnChangePassword_Click"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <StackPanel Grid.Row="0">
-                <Button x:Name="btnBack" Content="Quay lại" Click="btnBack_Click"   Width="150" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            </StackPanel>
-
-            <TextBlock x:Name="txtMessage" Grid.Row="4" Margin="0,15,0,0" FontSize="14" FontWeight="Medium" VerticalAlignment="Top"/>
+            <Border Grid.Column="1" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="8" Padding="15" Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Đổi mật khẩu" FontSize="18" FontWeight="Medium" Margin="0,0,0,10"/>
+                    <TextBlock Text="Mật khẩu cũ:" Margin="0,10,0,5"/>
+                    <PasswordBox x:Name="txtOldPassword" Padding="5" FontSize="14"/>
+                    <TextBlock Text="Mật khẩu mới:" Margin="0,10,0,5"/>
+                    <PasswordBox x:Name="txtNewPassword" Padding="5" FontSize="14"/>
+                    <TextBlock Text="Xác nhận mật khẩu:" Margin="0,10,0,5"/>
+                    <PasswordBox x:Name="txtConfirmNewPassword" Padding="5" FontSize="14"/>
+                    <Button x:Name="btnChangePassword" Content="Đổi mật khẩu" Width="150" HorizontalAlignment="Left" Margin="0,15,0,0" Click="btnChangePassword_Click"/>
+                </StackPanel>
+            </Border>
         </Grid>
 
-    </ScrollViewer>
+        <StackPanel Grid.Row="0">
+            <Button x:Name="btnBack" Content="Quay lại" Click="btnBack_Click"   Width="150" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <TextBlock x:Name="txtMessage" Grid.Row="4" Margin="0,15,0,0" FontSize="14" FontWeight="Medium" VerticalAlignment="Top"/>
+    </Grid>
 </Page>

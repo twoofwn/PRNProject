@@ -98,12 +98,15 @@ namespace PRNProject.Pages // <-- ĐÃ SỬA
         }
 
 
-        // --- SỰ KIỆN CÁC NÚT ---
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (!ValidateInput())
+                {
+                    return;
+                }
                 _currentTask.Title = TitleTextBox.Text;
                 _currentTask.Description = DescriptionTextBox.Text;
                 _currentTask.ProjectId = (int?)ProjectComboBox.SelectedValue;
@@ -121,6 +124,28 @@ namespace PRNProject.Pages // <-- ĐÃ SỬA
                 MessageBox.Show("Lỗi khi lưu task: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+            {
+                MessageBox.Show("Tiêu đề không được để trống!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            if (DueDatePicker.SelectedDate == null)
+            {
+                MessageBox.Show("Ngày hết hạn không được để trống!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (DueDatePicker.SelectedDate < DateTime.Today )
+            {
+                MessageBox.Show("Ngày hết hạn không được ở quá khứ!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true; 
+        }
+
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {

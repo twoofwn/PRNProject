@@ -23,7 +23,7 @@ namespace PRNProject.Pages
 
         private void LoadUserInfo()
         {
-            // Tải thông tin người dùng vào các ô text
+            //fill thông tin vào các ô input
             if (_currentUser != null)
             {
                 txtDisplayName.Text = _currentUser.DisplayName;
@@ -31,34 +31,43 @@ namespace PRNProject.Pages
             }
         }
 
-
         private void btnSaveInfo_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Tìm người dùng trong database
+                if (string.IsNullOrWhiteSpace(txtDisplayName.Text))
+                {
+                    ShowMessage("Tên hiển thị không được để trống.", true);
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(txtEmail.Text))
+                {
+                    ShowMessage("Email không được để trống.", true);
+                    return;
+                }
+                // tìm trong database
                 var userInDb = _context.Users.FirstOrDefault(u => u.UserId == _currentUser.UserId);
                 if (userInDb == null)
                 {
-                    ShowMessage("Error: Could not find user in database.", true);
+                    ShowMessage("Lỗi: Không tìm thấy người dùng trong cơ sở dữ liệu.", true);
                     return;
                 }
 
-                // Cập nhật thông tin
+                //cập nhật thông tin
                 userInDb.DisplayName = txtDisplayName.Text;
                 userInDb.Email = txtEmail.Text;
 
                 _context.SaveChanges();
 
-                // Cập nhật thông tin trong AppSession
+                //cập nhật trong appsession
                 AppSession.CurrentUser.DisplayName = userInDb.DisplayName;
                 AppSession.CurrentUser.Email = userInDb.Email;
 
-                ShowMessage("Information updated successfully!", false);
+                ShowMessage("Cập nhật thông tin thành công!", false);
             }
             catch (Exception ex)
             {
-                ShowMessage($"An error occurred: {ex.Message}", true);
+                ShowMessage($"Đã xảy ra lỗi: {ex.Message}", true);
             }
         }
 
@@ -68,31 +77,31 @@ namespace PRNProject.Pages
             string newPassword = txtNewPassword.Password;
             string confirmPassword = txtConfirmNewPassword.Password;
 
-            // --- Validation ---
+            //validation
             if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
             {
-                ShowMessage("Please fill in all password fields.", true);
+                ShowMessage("Vui lòng điền đầy đủ các trường mật khẩu.", true);
                 return;
             }
 
             if (newPassword != confirmPassword)
             {
-                ShowMessage("New password and confirmation password do not match.", true);
+                ShowMessage("Mật khẩu mới và mật khẩu xác nhận không trùng khớp.", true);
                 return;
             }
             if (_currentUser.PasswordHash != oldPassword)
             {
-                ShowMessage("Old password is not correct.", true);
+                ShowMessage("Mật khẩu cũ không chính xác.", true);
                 return;
             }
 
-            // --- Update Password ---
+            //update pass
             try
             {
                 var userInDb = _context.Users.FirstOrDefault(u => u.UserId == _currentUser.UserId);
                 if (userInDb == null)
                 {
-                    ShowMessage("Error: Could not find user in database.", true);
+                    ShowMessage("Lỗi: Không tìm thấy người dùng trong cơ sở dữ liệu.", true);
                     return;
                 }
 
@@ -105,19 +114,19 @@ namespace PRNProject.Pages
                 txtNewPassword.Password = "";
                 txtConfirmNewPassword.Password = "";
 
-                ShowMessage("Password changed successfully!", false);
+                ShowMessage("Đổi mật khẩu thành công!", false);
             }
             catch (Exception ex)
             {
-                ShowMessage($"An error occurred: {ex.Message}", true);
+                ShowMessage($"Đã xảy ra lỗi: {ex.Message}", true);
             }
         }
 
+        //hàm utils để show message
         private void ShowMessage(string message, bool isError)
         {
             txtMessage.Text = message;
             txtMessage.Foreground = isError ? Brushes.Red : Brushes.Green;
-            
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

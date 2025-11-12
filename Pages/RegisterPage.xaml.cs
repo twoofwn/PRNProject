@@ -34,7 +34,7 @@ namespace PRNProject.Pages
             string password = PasswordBox.Password;
             string confirmPassword = ConfirmPasswordBox.Password;
 
-            // --- Validation ---
+            //Validation
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Tên đăng nhập và mật khẩu không được để trống!", "Lỗi",
@@ -89,16 +89,10 @@ namespace PRNProject.Pages
             }
         }
 
+        // Quay lại login page
         private void GoToLoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.NavigationService.CanGoBack)
-            {
-                this.NavigationService.GoBack();
-            }
-            else
-            {
-                this.NavigationService.Navigate(new LoginPage());
-            }
+            this.NavigationService.Navigate(new LoginPage());
         }
     }
 }

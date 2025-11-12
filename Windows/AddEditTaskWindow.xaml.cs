@@ -55,17 +55,33 @@ namespace PRNProject.Windows
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
             {
-                MessageBox.Show("Tiêu đề không được để trống.", "Lỗi");
+                MessageBox.Show("Tiêu đề không được để trống.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (PriorityComboBox.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn độ ưu tiên.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (StatusComboBox.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn trạng thái.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (DueDatePicker.SelectedDate == null)
+            {
+                MessageBox.Show("Vui lòng chọn ngày hết hạn.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            Task.Title = TitleTextBox.Text;
-            Task.Description = DescriptionTextBox.Text;
+            Task.Title = TitleTextBox.Text.Trim();
+            Task.Description = DescriptionTextBox.Text?.Trim();
             Task.PriorityId = (int)PriorityComboBox.SelectedValue;
             Task.StatusId = (int)StatusComboBox.SelectedValue;
             Task.DueAt = DueDatePicker.SelectedDate;
 
             DialogResult = true;
         }
+
     }
 }

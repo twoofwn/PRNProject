@@ -84,14 +84,16 @@
                             <TextBlock Text="Ngày hết hạn:" FontWeight="Bold" Margin="0,0,0,5"/>
                             <DatePicker x:Name="DueDatePicker" DisplayDateStart="{x:Static sys:DateTime.Today}" 
                                         xmlns:sys="clr-namespace:System;assembly=mscorlib"/>
+                            <!-- ko dc chọn qkhu, sys: tên name space để dùng Datetime.Today -->
+                             <!-- mscorlib là assembly gốc chứa lớp Datetime -->
                         </StackPanel>
                     </Grid>
-
+    
                     <!--tag-->
                     <TextBlock Text="Tags:" FontWeight="Bold" Margin="0,10,0,5"/>
                     <ItemsControl x:Name="TagsItemsControl" Margin="0,0,0,10">
                         <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
+                            <ItemsPanelTemplate> <!-- cho item nó nằm ngang-->
                                 <WrapPanel/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>

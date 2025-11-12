@@ -23,7 +23,7 @@ namespace PRNProject.Windows
         {
             InitializeComponent();
 
-            PredefinedColors = new List<string>
+            PredefinedColors = new List<string>          // tự định danh màu sẵn
     {
         "#E63946", "#F1FAEE", "#A8DADC", "#457B9D", "#1D3557",
         "#FF6B6B", "#FFD166", "#06D6A0", "#118AB2", "#073B4C",
@@ -35,7 +35,7 @@ namespace PRNProject.Windows
             Project = project ?? new Project();
             _selectedMembers = new ObservableCollection<User>();
 
-            if (project != null)
+            if (project != null)                                // nếu là chỉnh sửa dự án
             {
                 Project = _context.Projects
                     .Include(p => p.OwnerUser)
@@ -63,7 +63,7 @@ namespace PRNProject.Windows
             }
             else
             {
-                ColorPickerListBox.SelectedIndex = 0;
+                ColorPickerListBox.SelectedIndex = 0;           // nếu thêm mới dự án
             }
 
             SelectedMembersListBox.ItemsSource = _selectedMembers;
@@ -167,7 +167,7 @@ namespace PRNProject.Windows
                 Project.ProjectMembers.Add(new ProjectMember { UserId = userId, ProjectId = Project.ProjectId });
             }
 
-            _context.Entry(Project).State = EntityState.Modified;
+            //_context.Entry(Project).State = EntityState.Modified;
             _context.SaveChanges();
 
             this.DialogResult = true;

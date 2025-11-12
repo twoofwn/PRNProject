@@ -14,12 +14,14 @@
         <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#172B4D"/>
         <SolidColorBrush x:Key="SubtleTextBrush" Color="#5E6C84"/>
 
+        <!--style for label-->
         <Style x:Key="FormLabelStyle" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{StaticResource HeaderForegroundBrush}"/>
             <Setter Property="Margin" Value="0,0,10,0"/>
         </Style>
 
+        <!--style for textbox-->
         <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="8,6"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
@@ -37,10 +39,10 @@
                                           VerticalScrollBarVisibility="Hidden"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger Property="IsMouseOver" Value="True">   <!--khi di chuot vao thi co vien xanh nhat-->
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
                             </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
+                            <Trigger Property="IsFocused" Value="True"> <!--khi click vao thi co vien xanh dam-->
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                                 <Setter Property="Padding" Value="7,5"/>
@@ -51,13 +53,15 @@
             </Setter>
         </Style>
 
+        <!--style for text area-->
         <Style x:Key="ModernTextAreaStyle" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
             <Setter Property="VerticalContentAlignment" Value="Top"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         </Style>
-
+        
+        <!--style for button-->
         <Style x:Key="BaseButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="12,6"/>
             <Setter Property="FontSize" Value="13"/>

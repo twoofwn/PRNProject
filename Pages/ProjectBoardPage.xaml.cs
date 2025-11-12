@@ -62,7 +62,7 @@ namespace PRNProject.Pages
 
             if (editWindow.ShowDialog() == true)
             {
-                _context.Entry(_currentProject).State = EntityState.Detached;
+                _context.Entry(_currentProject).State = EntityState.Detached; // Vì trong addEditProjectWindow dùng 1 dbcontext khác nên phải dùng detached để quên nó đi -> cập nhật mới
 
                 _currentProject = _context.Projects.Find(_currentProject.ProjectId);
 
@@ -106,12 +106,18 @@ namespace PRNProject.Pages
                 MessageBox.Show("Vui lòng chọn một task để sửa.");
                 return;
             }
-            var editWindow = new AddEditTaskWindow(selectedTask);
-            if (editWindow.ShowDialog() == true)
+            var projectOwner = _context.Users.Find(_currentProject.OwnerUserId);
+            if (projectOwner == null)
             {
-                _context.Entry(selectedTask).State = EntityState.Modified;
-                _context.SaveChanges();
-                LoadBoard();
+                MessageBox.Show("Không tìm thấy người dùng của project này.");
+                return;
+            }
+
+            // Giả định bạn có một cửa sổ tên là TaskDetailWindow để hiển thị chi tiết
+            var detailWindow = new TaskDetailWindow(selectedTask, projectOwner);
+            if (detailWindow.ShowDialog() == true)
+            {
+                LoadBoard(); // Tải lại bảng sau khi chỉnh sửa
             }
         }
 
@@ -141,7 +147,6 @@ namespace PRNProject.Pages
             return null;
         }
 
-        // <<< PHẦN CODE MỚI ĐƯỢC THÊM VÀO >>>
         private void Task_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var listView = sender as ListView;
@@ -154,7 +159,7 @@ namespace PRNProject.Pages
                 var projectOwner = _context.Users.Find(_currentProject.OwnerUserId);
                 if (projectOwner == null)
                 {
-                    MessageBox.Show("Lỗi: Không tìm thấy người dùng của project này.");
+                    MessageBox.Show("Không tìm thấy người dùng của project này.");
                     return;
                 }
 
@@ -166,7 +171,6 @@ namespace PRNProject.Pages
                 }
             }
         }
-        // <<< KẾT THÚC PHẦN CODE MỚI >>>
 
         #endregion
 
@@ -189,15 +193,15 @@ namespace PRNProject.Pages
 
         private void ListView_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && !_isDragging)
+            if (e.LeftButton == MouseButtonState.Pressed && !_isDragging)  // xem chuột trái có đang bấm và dragging = false ko
             {
                 Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)        // check vị trí ban đầu của chuột
                 {
                     _isDragging = true;
                     var listView = sender as ListView;
-                    var taskItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);
+                    var taskItem = FindAncestor<ListViewItem>((DependencyObject)e.OriginalSource);  // tìm phần tử cha của e.originalSouce (ptu thực sự mà chuột đang tương tác) 
                     if (taskItem != null)
                     {
                         var task = (Models.Task)listView.ItemContainerGenerator.ItemFromContainer(taskItem);
@@ -208,6 +212,7 @@ namespace PRNProject.Pages
             }
         }
 
+        
         private void ListView_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent("myTaskFormat"))
@@ -233,6 +238,7 @@ namespace PRNProject.Pages
             _isDragging = false;
         }
 
+        // đệ quy tìm cấp cha, trả về theo giá trị của T
         private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
         {
             do

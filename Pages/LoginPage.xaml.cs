@@ -1,19 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PRNProject.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PRNProject.Models;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PRNProject.Pages
 {
@@ -34,6 +21,7 @@ namespace PRNProject.Pages
                 string username = UsernameTextBox.Text;
                 string password = PasswordBox.Password;
 
+                // Chỉ trả về nếu có đúng 1 phần tử thôi
                 var user = db.Users
                              .SingleOrDefault(u => u.Username == username
                                                 && u.PasswordHash == password);
@@ -53,7 +41,7 @@ namespace PRNProject.Pages
             }
         }
 
-        // Hàm mới để xử lý sự kiện click nút đăng ký
+        // Chuyển hướng sang trang đăng ký
         private void GoToRegisterButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new RegisterPage());
