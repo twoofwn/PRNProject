@@ -42,6 +42,7 @@
         <Button Content="Trang chủ" Style="{StaticResource SidebarButtonStyle}" Tag="Dashboard" Click="SidebarButton_Click"/>
         <Button Content="Dự án" Style="{StaticResource SidebarButtonStyle}" Tag="Projects" Click="SidebarButton_Click"/>
         <Button Content="Lịch" Style="{StaticResource SidebarButtonStyle}" Tag="Calendar" Click="SidebarButton_Click"/>
+        <Button Content="Thống kê" Style="{StaticResource SidebarButtonStyle}" Tag="Statistic" Click="SidebarButton_Click"/>
         <Button Content="Cài đặt" Style="{StaticResource SidebarButtonStyle}" Tag="Setting" Click="SidebarButton_Click"/>
         <Separator Margin="10,5" />
         <Button Content="Đăng xuất" Style="{StaticResource SidebarButtonStyle}" Tag="Logout" Click="SidebarButton_Click"/>

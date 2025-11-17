@@ -8,6 +8,8 @@ public partial class Task
     public int TaskId { get; set; }
 
     public int? ProjectId { get; set; }
+    public int? AssignedUserId { get; set; }
+    public virtual User? AssignedUser { get; set; }
 
     public int OwnerUserId { get; set; }
 

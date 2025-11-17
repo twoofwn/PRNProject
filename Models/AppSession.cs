@@ -8,6 +8,6 @@ namespace PRNProject.Models
 {
     public static class AppSession
     {
-        public static User CurrentUser { get; set; }
+        public static User? CurrentUser { get; set; }
     }
 }

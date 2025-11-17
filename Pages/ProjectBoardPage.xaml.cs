@@ -27,18 +27,32 @@ namespace PRNProject.Pages
         private readonly MyTaskContext _context = new MyTaskContext();
         private Point _startPoint;
         private bool _isDragging = false;
+        private User _currentUser;
 
-        public ProjectBoardPage(Project project)
+        public ProjectBoardPage(Project project, User currentUser)
         {
             InitializeComponent();
             _currentProject = project;
+            _currentUser = currentUser; // Lưu người dùng hiện tại
             this.Loaded += Page_Loaded;
         }
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ProjectTitleTextBlock.Text = _currentProject.Title;
+            CheckPermissions(); 
             LoadBoard();
+        }
+        private void CheckPermissions()
+        {
+            // Ẩn/hiện nút "Thêm Task" dựa trên OwnerId
+            if (_currentUser.UserId == _currentProject.OwnerUserId)
+            {
+                AddTaskButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddTaskButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void LoadBoard()
@@ -47,6 +61,7 @@ namespace PRNProject.Pages
             var tasks = _context.Tasks
                 .AsNoTracking()
                 .Include(t => t.Priority)
+                .Include(t => t.AssignedUser)
                 .Where(t => t.ProjectId == _currentProject.ProjectId)
                 .ToList();
 
@@ -65,6 +80,15 @@ namespace PRNProject.Pages
                 _context.Entry(_currentProject).State = EntityState.Detached; // Vì trong addEditProjectWindow dùng 1 dbcontext khác nên phải dùng detached để quên nó đi -> cập nhật mới
 
                 _currentProject = _context.Projects.Find(_currentProject.ProjectId);
+                if (_currentProject == null)
+                {
+                    MessageBox.Show("Không tìm thấy project này, có thể đã bị xóa.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (NavigationService.CanGoBack)
+                    {
+                        NavigationService.GoBack();
+                    }
+                    return;
+                }
 
                 ProjectTitleTextBlock.Text = _currentProject.Title;
             }
@@ -72,6 +96,7 @@ namespace PRNProject.Pages
 
         private void DeleteProjectButton_Click(object sender, RoutedEventArgs e)
         {
+            
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa project '{_currentProject.Title}' và tất cả các task bên trong không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
@@ -99,12 +124,13 @@ namespace PRNProject.Pages
         #region Task CRUD
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            var addWindow = new AddEditTaskWindow();
+            var addWindow = new AddEditTaskWindow(_currentUser, _currentProject.ProjectId);
             if (addWindow.ShowDialog() == true)
             {
                 var newTask = addWindow.Task;
                 newTask.ProjectId = _currentProject.ProjectId;
-                newTask.OwnerUserId = _currentProject.OwnerUserId; 
+                newTask.OwnerUserId = _currentUser.UserId;
+                _context.Tasks.Add(newTask);
                 _context.Tasks.Add(newTask);
                 _context.SaveChanges();
                 LoadBoard();
@@ -119,17 +145,11 @@ namespace PRNProject.Pages
                 MessageBox.Show("Vui lòng chọn một task để sửa.");
                 return;
             }
-            var projectOwner = _context.Users.Find(_currentProject.OwnerUserId);
-            if (projectOwner == null)
-            {
-                MessageBox.Show("Không tìm thấy người dùng của project này.");
-                return;
-            }
 
-            var detailWindow = new TaskDetailWindow(selectedTask, projectOwner);
+            var detailWindow = new TaskDetailWindow(selectedTask, _currentUser);
             if (detailWindow.ShowDialog() == true)
             {
-                LoadBoard(); 
+                LoadBoard();
             }
         }
 
@@ -139,6 +159,11 @@ namespace PRNProject.Pages
             if (selectedTask == null)
             {
                 MessageBox.Show("Vui lòng chọn một task để xóa.");
+                return;
+            }
+            if (selectedTask.StatusId == 3)
+            {
+                MessageBox.Show("Không thể xóa task có trạng thái đã hoàn thành");
                 return;
             }
 
@@ -171,19 +196,10 @@ namespace PRNProject.Pages
                 var selectedTask = listView.SelectedItem as Models.Task;
                 if (selectedTask == null) return;
 
-                // Lấy thông tin người dùng sở hữu project
-                var projectOwner = _context.Users.Find(_currentProject.OwnerUserId);
-                if (projectOwner == null)
-                {
-                    MessageBox.Show("Không tìm thấy người dùng của project này.");
-                    return;
-                }
-
-                // mở cửa sổ task detail
-                var detailWindow = new TaskDetailWindow(selectedTask, projectOwner);
+                var detailWindow = new TaskDetailWindow(selectedTask, _currentUser);
                 if (detailWindow.ShowDialog() == true)
                 {
-                    LoadBoard(); // tải lại board
+                    LoadBoard();
                 }
             }
         }
@@ -267,4 +283,9 @@ namespace PRNProject.Pages
         }
         #endregion
     }
+}
+public class AssigneeViewModel
+{
+    public int? UserId { get; set; }
+    public string DisplayName { get; set; } = string.Empty;
 }

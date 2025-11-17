@@ -7,7 +7,7 @@
       xmlns:windows="clr-namespace:PRNProject.Windows"
       mc:Ignorable="d" 
       xmlns:components="clr-namespace:PRNProject.Pages.Components"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="ProjectPage">
 
     <Page.Resources>

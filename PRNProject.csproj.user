@@ -9,6 +9,9 @@
     <Compile Update="Pages\Components\Sidebar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\DashboardPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\HomePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

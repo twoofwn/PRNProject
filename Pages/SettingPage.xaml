@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PRNProject.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="900"
+      d:DesignHeight="600" d:DesignWidth="1000"
       Title="SettingPage"
       Background="#FFFFFF">
 
@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
 
         <TextBlock Grid.Row="0" Text="Cài đặt" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,20"/>
 

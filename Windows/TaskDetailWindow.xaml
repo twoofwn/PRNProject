@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PRNProject.Pages" 
         mc:Ignorable="d"
-        Title="Chi Tiết Công Việc" Height="500" Width="700"
+        Title="Chi Tiết Công Việc" Height="500" Width="800"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
     <Window.Resources>
@@ -65,20 +65,23 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,5,10">
-                            <TextBlock Text="Dự án:" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                     <StackPanel  Grid.Row="0" Grid.Column="0" Margin="0,0,5,10">
+                           <TextBlock Text="Dự án:" FontWeight="Bold" Margin="0,0,0,5" Width="100"/>
                             <ComboBox x:Name="ProjectComboBox" DisplayMemberPath="Title" SelectedValuePath="ProjectId"/>
-                        </StackPanel>
+                     </StackPanel>
 
-                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,10">
-                            <TextBlock Text="Trạng thái:" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <ComboBox x:Name="StatusComboBox" DisplayMemberPath="Name" SelectedValuePath="StatusId"/>
-                        </StackPanel>
 
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,10">
-                            <TextBlock Text="Độ ưu tiên:" FontWeight="Bold" Margin="0,0,0,5"/>
-                            <ComboBox x:Name="PriorityComboBox" DisplayMemberPath="Name" SelectedValuePath="PriorityId"/>
-                        </StackPanel>
+                     <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,10" >
+                           <TextBlock Text="Trạng thái:" FontWeight="Bold" Margin="0,0,0,5" Width="100"/>
+                           <ComboBox x:Name="StatusComboBox" DisplayMemberPath="Name" SelectedValuePath="StatusId"/>
+                     </StackPanel>
+
+
+                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,5,10">
+                          <TextBlock Text="Độ ưu tiên:" FontWeight="Bold" Margin="0,0,0,5"/>
+                          <ComboBox x:Name="PriorityComboBox" DisplayMemberPath="Name" SelectedValuePath="PriorityId"/>
+                     </StackPanel>
 
                         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,10">
                             <TextBlock Text="Ngày hết hạn:" FontWeight="Bold" Margin="0,0,0,5"/>

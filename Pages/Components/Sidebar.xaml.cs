@@ -59,6 +59,12 @@ namespace PRNProject.Pages.Components
                             MainWindow.MainNavigationFrame.Navigate(new CalendarPage(currentUser));
                         }
                         break;
+                    case "Statistic":
+                        if (!(MainWindow.MainNavigationFrame.Content is DashboardPage))
+                        {
+                            MainWindow.MainNavigationFrame.Navigate(new DashboardPage(currentUser));
+                        }
+                        break;
                     case "Setting":
                         if (!(MainWindow.MainNavigationFrame.Content is SettingPage))
                         {

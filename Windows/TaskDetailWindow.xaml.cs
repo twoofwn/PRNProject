@@ -67,7 +67,9 @@ namespace PRNProject.Pages
             // Load Priorities
             PriorityComboBox.ItemsSource = _context.Priorities.ToList();
             PriorityComboBox.SelectedValue = _currentTask.PriorityId;
+
         }
+
 
         private void LoadComments()
         {
@@ -113,6 +115,7 @@ namespace PRNProject.Pages
                 _currentTask.StatusId = (int)StatusComboBox.SelectedValue;
                 _currentTask.PriorityId = (int)PriorityComboBox.SelectedValue;
                 _currentTask.DueAt = DueDatePicker.SelectedDate;
+
                 _currentTask.UpdatedAt = DateTime.UtcNow;
 
                 _context.SaveChanges();
@@ -149,6 +152,11 @@ namespace PRNProject.Pages
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_currentTask.StatusId == 3)
+            {
+                MessageBox.Show("Không thể xóa task có trạng thái đã hoàn thành");
+                return;
+            }
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa task '{_currentTask.Title}' không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
@@ -239,4 +247,5 @@ namespace PRNProject.Pages
         }
     }
 }
+
 

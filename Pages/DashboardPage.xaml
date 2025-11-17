@@ -1,18 +1,17 @@
-﻿<Page x:Class="PRNProject.Pages.HomePage"
+﻿<Page x:Class="PRNProject.Pages.DashboardPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PRNProject.Pages"
-      xmlns:components="clr-namespace:PRNProject.Pages.Components"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1000"
-      Title="HomePage"
-      Loaded="Page_Loaded">
+      Title="DashboardPage"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+      xmlns:components="clr-namespace:PRNProject.Pages.Components" Loaded="Page_Loaded">
 
     <Page.Resources>
         <local:PriorityToColorConverter x:Key="PriorityToColorConverter"/>
-
         <SolidColorBrush x:Key="ColumnBackgroundBrush" Color="#F0F2F5"/>
         <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="BorderBrush" Color="#CCCCCC"/>
@@ -20,7 +19,7 @@
         <SolidColorBrush x:Key="HeaderForegroundBrush" Color="#172B4D"/>
         <SolidColorBrush x:Key="SubtleTextBrush" Color="#5E6C84"/>
 
-        <Style TargetType="Border" x:Key="KanbanColumnStyle">
+        <Style x:Key="KanbanColumnStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource ColumnBackgroundBrush}"/>
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Padding" Value="10"/>
@@ -53,37 +52,10 @@
             </Setter>
         </Style>
 
-        <DataTemplate x:Key="TaskItemTemplate">
-            <Border Background="{StaticResource CardBackgroundBrush}" 
-                CornerRadius="5" 
-                Padding="10" 
-                Margin="0,5,15,5" >
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="1" Color="#AAAAAA" Opacity="0.3" BlurRadius="5" Direction="270"/>
-                </Border.Effect>
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.Row="0" Height="8" CornerRadius="5,5,0,0" Margin="-10,-10,-10,5" 
-                        Background="{Binding PriorityId, Converter={StaticResource PriorityToColorConverter}}"/>
-
-                    <TextBlock Grid.Row="0" Text="{Binding Title}" FontWeight="SemiBold" 
-                           Foreground="{StaticResource HeaderForegroundBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
-
-                    <TextBlock Grid.Row="1" Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}" 
-                           Foreground="{StaticResource SubtleTextBrush}" FontSize="11" Margin="0,5,0,0"/>
-                </Grid>
-            </Border>
-        </DataTemplate>
-
         <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="8,6"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="1V"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -149,105 +121,78 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
     </Page.Resources>
 
     <DockPanel LastChildFill="True">
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
-                <TextBlock x:Name="WelcomeTextBlock" Text="Chào mừng!"/>
-            </StatusBarItem>
-        </StatusBar>
 
         <components:Sidebar x:Name="SidebarControl" DockPanel.Dock="Left"/>
 
-        <Grid Margin="20">
+        <Grid Margin="20" Background="{StaticResource ColumnBackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="BẢNG CÔNG VIỆC" FontSize="22" FontWeight="Bold" 
-                   Margin="0,0,0,15" Foreground="{StaticResource HeaderForegroundBrush}"/>
+            <TextBlock Grid.Row="0" Text="THỐNG KÊ TIẾN ĐỘ" FontSize="22" FontWeight="Bold" 
+                       Margin="0,0,0,15" Foreground="{StaticResource HeaderForegroundBrush}"/>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
-                <TextBox x:Name="SearchTextBox" Width="200" Margin="0,0,10,0" 
-                     TextChanged="SearchTextBox_TextChanged" ToolTip="Tìm kiếm theo tiêu đề công việc"
-                     Style="{StaticResource ModernTextBoxStyle}"/>
-
-                <ComboBox x:Name="PriorityFilterComboBox" Width="150" Margin="0,0,10,0" 
-                      SelectionChanged="Filter_SelectionChanged" ToolTip="Lọc theo độ ưu tiên"
-                      Style="{StaticResource ModernComboBoxStyle}"/>
-
-                <ComboBox x:Name="TagFilterComboBox" Width="150" Margin="0,0,10,0" 
-                      SelectionChanged="Filter_SelectionChanged" ToolTip="Lọc theo nhãn"
-                      Style="{StaticResource ModernComboBoxStyle}"/>
-
-                <Button Content="Xóa lọc" Click="ClearFilterButton_Click" Margin="5,0,0,0"
-                    Style="{StaticResource ModernButtonStyle}"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+                <TextBlock Text="Xem thống kê cho:" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14"/>
+                <ComboBox x:Name="ProjectFilterComboBox" Width="250" 
+                          SelectionChanged="ProjectFilter_SelectionChanged"
+                          Style="{StaticResource ModernComboBoxStyle}"/>
             </StackPanel>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="0.8*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Style="{StaticResource KanbanColumnStyle}">
+                <Border Grid.Column="1" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8" Padding="15" Margin="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="CẦN LÀM (Todo)" Style="{StaticResource ColumnHeaderStyle}"/>
-                        <ListView Grid.Row="1" x:Name="TodoListView" 
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      Style="{StaticResource KanbanListViewStyle}"
-                      ItemTemplate="{StaticResource TaskItemTemplate}" 
-                      AllowDrop="True" Drop="ListView_Drop" 
-                      PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                      MouseMove="ListView_MouseMove"
-                      MouseDoubleClick="Task_MouseDoubleClick"/>
+                        <TextBlock Grid.Row="0" Text="TỔNG QUAN TRẠNG THÁI" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
+                        <lvc:PieChart Grid.Row="1" x:Name="StatusChart" Series="{Binding StatusSeries}" LegendLocation="Bottom" Hoverable="True" DataClick="Chart_DataClick">
+                            <lvc:PieChart.ChartLegend>
+                                <lvc:DefaultLegend BulletSize="12"/>
+                            </lvc:PieChart.ChartLegend>
+                            <lvc:PieChart.DataTooltip>
+                                <lvc:DefaultTooltip BulletSize="12"/>
+                            </lvc:PieChart.DataTooltip>
+                        </lvc:PieChart>
                     </Grid>
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource KanbanColumnStyle}">
+                <Border Grid.Column="0" Background="{StaticResource CardBackgroundBrush}" CornerRadius="8" Padding="15" Margin="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="ĐANG LÀM (In Progress)" Style="{StaticResource ColumnHeaderStyle}"/>
-                        <ListView Grid.Row="1" x:Name="InProgressListView" 
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      Style="{StaticResource KanbanListViewStyle}"
-                      ItemTemplate="{StaticResource TaskItemTemplate}" 
-                      AllowDrop="True" Drop="ListView_Drop"
-                      PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                      MouseMove="ListView_MouseMove"
-                      MouseDoubleClick="Task_MouseDoubleClick"/>
-                    </Grid>
-                </Border>
-
-                <Border Grid.Column="2" Style="{StaticResource KanbanColumnStyle}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="HOÀN THÀNH (Done)" Style="{StaticResource ColumnHeaderStyle}"/>
-                        <ListView Grid.Row="1" x:Name="DoneListView" 
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      Style="{StaticResource KanbanListViewStyle}"
-                      ItemTemplate="{StaticResource TaskItemTemplate}" 
-                      AllowDrop="True" Drop="ListView_Drop"
-                      PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                      MouseMove="ListView_MouseMove"
-                      MouseDoubleClick="Task_MouseDoubleClick"/>
+                        <TextBlock Grid.Row="0" Text="PHÂN LOẠI ƯU TIÊN" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
+                        <lvc:CartesianChart Grid.Row="1" x:Name="PriorityChart" Series="{Binding PrioritySeries}" LegendLocation="Bottom">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Độ ưu tiên" Labels="{Binding PriorityLabels}"/>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Số lượng Task" MinValue="0">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator Step="1" IsEnabled="True"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
                     </Grid>
                 </Border>
             </Grid>
         </Grid>
+
     </DockPanel>
+
 </Page>

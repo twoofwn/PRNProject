@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PRNProject.Windows"
         mc:Ignorable="d"
-        Title="AddEditTaskWindow" Height="450" Width="450"
+        Title="Thêm Task Mới" Height="500" Width="450"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         >
     <Grid Margin="15">
@@ -48,7 +48,15 @@
             <DatePicker x:Name="DueDatePicker"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+        <StackPanel Grid.Row="4" Margin="0,10,0,0">
+            <TextBlock Text="Giao cho:" Margin="0,0,0,5"/>
+            <ComboBox x:Name="AssignUserComboBox" 
+                      Padding="5"
+                      DisplayMemberPath="DisplayName" 
+                      SelectedValuePath="UserId"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
             <Button Content="Lưu" Width="80" Padding="8,5" IsDefault="True" Click="SaveButton_Click"/>
             <Button Content="Hủy" Width="80" Padding="8,5" Margin="10,0,0,0" IsCancel="True"/>
         </StackPanel>

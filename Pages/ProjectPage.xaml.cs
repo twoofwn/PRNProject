@@ -64,7 +64,7 @@ namespace PRNProject.Pages
         {
             if (sender is FrameworkElement element && element.DataContext is Project selectedProject)
             {
-                this.NavigationService.Navigate(new ProjectBoardPage(selectedProject));
+                this.NavigationService.Navigate(new ProjectBoardPage(selectedProject, _currentUser));
             }
         }
     }

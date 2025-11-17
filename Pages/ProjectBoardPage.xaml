@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PRNProject.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       Title="ProjectBoardPage">
 
     <Page.Resources>
@@ -56,7 +56,7 @@
             <Border Background="{StaticResource CardBackgroundBrush}" 
                 CornerRadius="5" 
                 Padding="10" 
-                Margin="0,5">
+                Margin="0,5,15,5">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="1" Color="#AAAAAA" Opacity="0.3" BlurRadius="5" Direction="270"/>
                 </Border.Effect>
@@ -70,8 +70,17 @@
                         Background="{Binding PriorityId, Converter={StaticResource PriorityToColorConverter}}"/>
                     <TextBlock Grid.Row="0" Text="{Binding Title}" FontWeight="SemiBold" 
                            Foreground="{StaticResource HeaderForegroundBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
-                    <TextBlock Grid.Row="1" Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}" 
-                           Foreground="{StaticResource SubtleTextBrush}" FontSize="11" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock Foreground="{StaticResource SubtleTextBrush}" FontSize="11" Margin="5,5,0,0">
+                                <Run Text="Due at: "/>
+                                <Run Text="{Binding DueAt, StringFormat='dd/MM/yyyy'}"/>
+                        </TextBlock>
+                        <TextBlock Foreground="{StaticResource SubtleTextBrush}" FontSize="11" Margin="5,5,0,0">
+                                <Run Text="By: "/>
+                                <Run Text="{Binding AssignedUser.DisplayName}"/>        
+                        </TextBlock>
+                    </StackPanel>
+                    
                 </Grid>
             </Border>
         </DataTemplate>
@@ -159,7 +168,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
-            <Button Content="Thêm Task" Click="AddTask_Click" 
+            <Button x:Name="AddTaskButton" Content="Thêm Task" Click="AddTask_Click" 
                 Style="{StaticResource PrimaryButtonStyle}"/>
 
             <Button Content="Sửa Task" Margin="10,0" Click="EditTask_Click" 
@@ -185,42 +194,63 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource KanbanColumnStyle}">
-                <StackPanel>
-                    <TextBlock Text="CẦN LÀM (Todo)" Style="{StaticResource ColumnHeaderStyle}"/>
-                    <ListView x:Name="TodoListView" 
-                          Style="{StaticResource KanbanListViewStyle}"
-                          ItemTemplate="{StaticResource TaskItemTemplate}" 
-                          AllowDrop="True" Drop="ListView_Drop" 
-                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                          MouseMove="ListView_MouseMove"
-                          MouseDoubleClick="Task_MouseDoubleClick"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="CẦN LÀM (Todo)" Style="{StaticResource ColumnHeaderStyle}"/>
+
+                    <ListView Grid.Row="1" x:Name="TodoListView" 
+                      Style="{StaticResource KanbanListViewStyle}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                      ItemTemplate="{StaticResource TaskItemTemplate}" 
+                      AllowDrop="True" Drop="ListView_Drop" 
+                      PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                      MouseMove="ListView_MouseMove"
+                      MouseDoubleClick="Task_MouseDoubleClick"/>
+                </Grid>
             </Border>
 
             <Border Grid.Column="1" Style="{StaticResource KanbanColumnStyle}">
-                <StackPanel>
-                    <TextBlock Text="ĐANG LÀM (In Progress)" Style="{StaticResource ColumnHeaderStyle}"/>
-                    <ListView x:Name="InProgressListView" 
-                          Style="{StaticResource KanbanListViewStyle}"
-                          ItemTemplate="{StaticResource TaskItemTemplate}" 
-                          AllowDrop="True" Drop="ListView_Drop"
-                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                          MouseMove="ListView_MouseMove"
-                          MouseDoubleClick="Task_MouseDoubleClick"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="ĐANG LÀM (In Progress)" Style="{StaticResource ColumnHeaderStyle}"/>
+
+                    <ListView Grid.Row="1" x:Name="InProgressListView" 
+                      Style="{StaticResource KanbanListViewStyle}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ItemTemplate="{StaticResource TaskItemTemplate}" 
+                      AllowDrop="True" Drop="ListView_Drop"
+                      PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                      MouseMove="ListView_MouseMove"
+                      MouseDoubleClick="Task_MouseDoubleClick"/>
+                </Grid>
             </Border>
 
             <Border Grid.Column="2" Style="{StaticResource KanbanColumnStyle}">
-                <StackPanel>
-                    <TextBlock Text="HOÀN THÀNH (Done)" Style="{StaticResource ColumnHeaderStyle}"/>
-                    <ListView x:Name="DoneListView" 
-                          Style="{StaticResource KanbanListViewStyle}"
-                          ItemTemplate="{StaticResource TaskItemTemplate}" 
-                          AllowDrop="True" Drop="ListView_Drop"
-                          PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                          MouseMove="ListView_MouseMove"
-                          MouseDoubleClick="Task_MouseDoubleClick"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="HOÀN THÀNH (Done)" Style="{StaticResource ColumnHeaderStyle}"/>
+
+                    <ListView Grid.Row="1" x:Name="DoneListView" 
+                      Style="{StaticResource KanbanListViewStyle}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ItemTemplate="{StaticResource TaskItemTemplate}" 
+                      AllowDrop="True" Drop="ListView_Drop"
+                      PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                      MouseMove="ListView_MouseMove"
+                      MouseDoubleClick="Task_MouseDoubleClick"/>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

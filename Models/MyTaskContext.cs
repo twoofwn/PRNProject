@@ -143,7 +143,8 @@ public partial class MyTaskContext : DbContext
             entity.Property(e => e.StatusId).HasDefaultValue(1);
             entity.Property(e => e.Title).HasMaxLength(500);
 
-            entity.HasOne(d => d.OwnerUser).WithMany(p => p.Tasks)
+            entity.HasOne(d => d.OwnerUser)
+                .WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.OwnerUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Task_User");
@@ -157,6 +158,11 @@ public partial class MyTaskContext : DbContext
                 .HasForeignKey(d => d.ProjectId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Task_Project");
+            entity.HasOne(d => d.AssignedUser)
+                .WithMany(p => p.AssignedTasks) // Tham chiếu đến ICollection ta vừa tạo ở User.cs
+                .HasForeignKey(d => d.AssignedUserId) // Khóa ngoại
+                .HasConstraintName("FK_Task_AssignedUser") // Tên constraint trong SQL
+                .OnDelete(DeleteBehavior.SetNull);
 
             entity.HasOne(d => d.Status).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.StatusId)

@@ -29,5 +29,7 @@ public partial class User
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 
-    
+    public virtual ICollection<Task> AssignedTasks { get; set; } = new List<Task>();
+
+
 }
