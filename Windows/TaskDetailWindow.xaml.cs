@@ -109,6 +109,11 @@ namespace PRNProject.Pages
                 {
                     return;
                 }
+                if (_currentTask.AssignedUserId != _currentUser.UserId && _currentTask.AssignedUserId != null)
+                {
+                    MessageBox.Show("Không thể sửa task của người khác");
+                    return; 
+                }
                 _currentTask.Title = TitleTextBox.Text;
                 _currentTask.Description = DescriptionTextBox.Text;
                 _currentTask.ProjectId = (int?)ProjectComboBox.SelectedValue;
@@ -155,6 +160,11 @@ namespace PRNProject.Pages
             if (_currentTask.StatusId == 3)
             {
                 MessageBox.Show("Không thể xóa task có trạng thái đã hoàn thành");
+                return;
+            }
+            if (_currentTask.AssignedUserId != _currentUser.UserId && _currentTask.AssignedUserId != null)
+            {
+                MessageBox.Show("Không thể xóa task của người khác");
                 return;
             }
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa task '{_currentTask.Title}' không?", "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);

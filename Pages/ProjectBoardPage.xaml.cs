@@ -145,7 +145,7 @@ namespace PRNProject.Pages
                 MessageBox.Show("Vui lòng chọn một task để sửa.");
                 return;
             }
-
+            
             var detailWindow = new TaskDetailWindow(selectedTask, _currentUser);
             if (detailWindow.ShowDialog() == true)
             {
@@ -159,6 +159,11 @@ namespace PRNProject.Pages
             if (selectedTask == null)
             {
                 MessageBox.Show("Vui lòng chọn một task để xóa.");
+                return;
+            }
+            if (selectedTask.AssignedUserId != _currentUser.UserId && selectedTask.AssignedUserId != null)
+            {
+                MessageBox.Show("Không thể xóa task của người khác");
                 return;
             }
             if (selectedTask.StatusId == 3)
@@ -273,13 +278,23 @@ namespace PRNProject.Pages
         // đệ quy tìm cấp cha, trả về theo giá trị của T
         private static T FindAncestor<T>(DependencyObject current) where T : DependencyObject
         {
-            do
+            try
             {
-                if (current is T) return (T)current;
-                current = VisualTreeHelper.GetParent(current);
+                do
+                {
+                    if (current is T) return (T)current;
+                    current = VisualTreeHelper.GetParent(current);
+                }
+                while (current != null) ;
+                
+
             }
-            while (current != null);
+            catch (Exception e)
+            {
+                MessageBox.Show("Error");
+            }
             return null;
+
         }
         #endregion
     }

@@ -81,6 +81,7 @@ namespace PRNProject.Pages
 
             IQueryable<Models.Task> tasksQuery;
 
+            // Lọc
             if (selectedProjectId == 0) 
             {
                 var userOwnedProjectIds = _context.Projects
@@ -92,6 +93,7 @@ namespace PRNProject.Pages
             }
             else 
             {
+                // nếu chọn 1 project cụ thể
                 tasksQuery = _context.Tasks
                     .Where(t => t.ProjectId == selectedProjectId);
             }
@@ -102,17 +104,19 @@ namespace PRNProject.Pages
                 .AsNoTracking()
                 .ToList();
 
+            // nhóm theo status, list có dạng : {sttId, sttName, taskCount}
             var statusSummary = tasks
                 .GroupBy(t => new { t.Status.StatusId, t.Status.Name })
                 .Select(g => new
                 {
                     StatusId = g.Key.StatusId,
                     StatusName = g.Key.Name,
-                    TaskCount = g.Count()
+                    TaskCount = g.Count()       // Đếm số task của mỗi nhóm stt
                 })
                 .OrderBy(s => s.StatusId)
                 .ToList();
 
+            // Cập nhật vào PieChart
             StatusSeries.Clear();
             foreach (var item in statusSummary)
             {
@@ -125,6 +129,7 @@ namespace PRNProject.Pages
                 });
             }
 
+            // nhóm theo status
             var prioritySummary = tasks
                 .GroupBy(t => new { t.Priority.PriorityId, t.Priority.Name })
                 .Select(g => new
@@ -136,6 +141,7 @@ namespace PRNProject.Pages
                 .OrderBy(p => p.PriorityId)
                 .ToList();
 
+            // Vẽ biểu đồ cột
             PrioritySeries.Clear();
             PrioritySeries.Add(new ColumnSeries
             {
